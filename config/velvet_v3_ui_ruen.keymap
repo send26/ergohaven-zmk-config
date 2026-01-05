@@ -136,7 +136,7 @@
         braces_ru: ruleftbrace {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&to_en &kp LBRC &kp SPACE &kp RBKT &kp LEFT_ARROW>;
+            bindings = <&to_en &kp LEFT_BRACE &kp RIGHT_BRACE &kp LEFT_ARROW>;
             label = "RULEFTBRACE";
         };
 
