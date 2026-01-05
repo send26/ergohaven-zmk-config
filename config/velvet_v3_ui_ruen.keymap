@@ -59,7 +59,7 @@
 
         combo_braces_en {
             bindings = <&braces_en>;
-            key-positions = <19 21>;
+            key-positions = <19 20>;
             layers = <0 3>;
         };
 
