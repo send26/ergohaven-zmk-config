@@ -253,19 +253,7 @@
         };
     };
 
-    conditional_layers {
-        compatible = "zmk,conditional-layers";
-
-        en_sym {
-            if-layers = <0>;
-            then-layer = <3>;
-        };
-
-        ru_sym {
-            if-layers = <1>;
-            then-layer = <4>;
-        };
-    };
+    conditional_layers { compatible = "zmk,conditional-layers"; };
 };
 
 &trackball { cpi = <1000>; };
