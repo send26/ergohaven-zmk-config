@@ -77,7 +77,7 @@
         to_ru: to_ru {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&kp LC(SPACE)>;
+            bindings = <&kp RIGHT_COMMAND>;
             label = "TO_RU";
             wait-ms = <0>;
             tap-ms = <30>;
@@ -86,7 +86,7 @@
         to_en: to_en {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&kp LC(SPACE)>;
+            bindings = <&kp LEFT_COMMAND>;
             label = "TO_EN";
             wait-ms = <0>;
             tap-ms = <30>;
