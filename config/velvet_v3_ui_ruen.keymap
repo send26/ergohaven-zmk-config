@@ -127,7 +127,7 @@
         braces_ru: ruleftbrace {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&kp LC(SPACE) &kp LEFT_BRACE &kp RIGHT_BRACE &kp LEFT_ARROW &kp LC(SPACE)>;
+            bindings = <&kp LC(SPACE) &to 0 &kp LEFT_BRACE &kp RIGHT_BRACE &kp LEFT_ARROW &kp LC(SPACE)>;
             label = "RULEFTBRACE";
         };
 
