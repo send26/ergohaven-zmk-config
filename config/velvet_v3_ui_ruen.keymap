@@ -28,15 +28,6 @@
             release-after-ms = <200>;
         };
 
-        lg_caps: lg_caps {
-            compatible = "zmk,behavior-mod-morph";
-            label = "toggle 'ru' layer with LGUI";
-            bindings = <&kt CAPS>, <&lg_tog>;
-
-            #binding-cells = <0>;
-            mods = <(MOD_LGUI)>;
-        };
-
         zip_auto_mouse: zip_auto_mouse {
             compatible = "zmk,input-processor-temp-layer";
             #input-processor-cells = <2>;
