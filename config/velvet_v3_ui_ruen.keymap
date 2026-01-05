@@ -51,7 +51,7 @@
             layers = <0>;
         };
 
-        combo_braces_ru {
+        combo_brace_ru {
             bindings = <&braces_ru>;
             key-positions = <19 21>;
             layers = <1 4>;
@@ -59,7 +59,7 @@
             timeout-ms = <0>;
         };
 
-        combo_braces_en {
+        combo_brace_en {
             bindings = <&braces_en>;
             key-positions = <19 21>;
             layers = <0 3>;
@@ -129,10 +129,10 @@
         braces_ru: ruleftbrace {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&to 0 &kp LC(SPACE) &kp LEFT_BRACE &kp RIGHT_BRACE &kp LEFT_ARROW &to 1 &kp LC(SPACE)>;
+            bindings = <&layer_en &kp LEFT_BRACE &kp RIGHT_BRACE &kp LEFT_ARROW &layer_ru>;
             label = "RULEFTBRACE";
-            tap-ms = <1>;
-            wait-ms = <1>;
+            tap-ms = <0>;
+            wait-ms = <0>;
         };
 
         braces_en: braces_en {
