@@ -54,7 +54,7 @@
         combo_braces_ru {
             bindings = <&braces_ru>;
             key-positions = <19 21>;
-            layers = <1>;
+            layers = <1 4>;
             require-prior-idle-ms = <0>;
             timeout-ms = <0>;
         };
@@ -62,7 +62,7 @@
         combo_braces_en {
             bindings = <&braces_en>;
             key-positions = <19 21>;
-            layers = <0>;
+            layers = <0 3>;
             timeout-ms = <0>;
             require-prior-idle-ms = <0>;
         };
@@ -192,10 +192,10 @@
         sym_ru {
             display-name = "Symbols_ru";
             bindings = <
-&kp RU_CYRILLIC_IO  &en HASH          &kp LT    &kp EQUAL     &en GT       &en GRAVE                    &en CARET  &kp RU_DQT  &kp UNDER    &en SQT   &kp LBKT    &kp RIGHT_BRACKET
-&layer_en           &kp RU_BACKSLASH  &kp LPAR  &kp MINUS     &kp RPAR     &kp PLUS                     &kp PRCNT  &en LBRC    &kp RU_SEMI  &kp RBRC  &kp EXCL    &kp RU_QMARK
-&trans              &kp RU_COMMA      &kp STAR  &kp RU_COLON  &kp RU_FSLH  &en DLLR                     &en AT     &en PIPE    &en TILDE    &en AMPS  &kp RU_DOT  &trans
-                                      &trans    &trans        &trans       &mo 5      &trans    &trans  &trans     &trans      &en LBKT     &en RBKT
+&kp RU_CYRILLIC_IO  &kp RA(HASH)      &kp LT    &kp EQUAL     &en GT       &en GRAVE                    &en CARET  &kp RU_DQT      &kp UNDER    &en SQT          &en LEFT_BRACKET  &en RIGHT_BRACKET
+&layer_en           &kp RU_BACKSLASH  &kp LPAR  &kp MINUS     &kp RPAR     &kp PLUS                     &kp PRCNT  &en LEFT_BRACE  &kp RU_SEMI  &en RIGHT_BRACE  &kp EXCL          &kp RU_QMARK
+&trans              &kp RU_COMMA      &kp STAR  &kp RU_COLON  &kp RU_FSLH  &en DLLR                     &en AT     &en PIPE        &en TILDE    &en AMPS         &kp RU_DOT        &trans
+                                      &trans    &trans        &trans       &mo 5      &trans    &trans  &trans     &trans          &en LBKT     &en RBKT
             >;
         };
 
@@ -250,6 +250,20 @@
 &trans  &trans  &trans  &trans  &trans  &trans                    &trans  &kp N1  &kp N2  &kp N3      &trans      &trans
                 &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &kp N0  &kp KP_DOT
             >;
+        };
+    };
+
+    conditional_layers {
+        compatible = "zmk,conditional-layers";
+
+        en_sym {
+            if-layers = <0>;
+            then-layer = <3>;
+        };
+
+        ru_sym {
+            if-layers = <1>;
+            then-layer = <4>;
         };
     };
 };
