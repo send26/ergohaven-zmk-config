@@ -59,6 +59,11 @@
             key-positions = <3 4>;
             layers = <0>;
         };
+
+        braces {
+            bindings = <&none>;
+            key-positions = <19 21>;
+        };
     };
 
     macros {
@@ -121,12 +126,18 @@
             label = "EN";
         };
 
-        ruleftbrace: ruleftbrace {
+        braces_ru: ruleftbrace {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&kp LBKT &kp SPACE &kp RBKT &kp>, <&macro_press>;
-
+            bindings = <&to_en &kp LBRC &kp SPACE &kp RBKT &kp LEFT_ARROW>;
             label = "RULEFTBRACE";
+        };
+
+        braces_en: braces_en {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LEFT_BRACE &kp RBRC &kp LEFT_ARROW>;
+            label = "BRACES_EN";
         };
     };
 
