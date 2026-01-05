@@ -92,7 +92,7 @@
         layer_ru: layer_ru {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&to 1 &to_ru>;
+            bindings = <&to_ru>;
             label = "LAYER_RU";
             tap-ms = <30>;
             wait-ms = <0>;
@@ -101,7 +101,7 @@
         lg_tog: lg_tog {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&kp CAPS &tog 1>;
+            bindings = <&kp CAPS>;
             label = "LG_TOG";
         };
     };
