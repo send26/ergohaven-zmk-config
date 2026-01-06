@@ -188,10 +188,10 @@
         sym_ru {
             display-name = "Symbols_ru";
             bindings = <
-&kp RU_CYRILLIC_IO  &en HASH          &kp LT    &kp EQUAL         &en GT       &en GRAVE                    &en CARET  &kp RU_DQT      &kp UNDER      &en SQT           &en LEFT_BRACKET  &en RIGHT_BRACKET
-&layer_en           &kp RU_BACKSLASH  &kp LPAR  &kp MINUS         &kp RPAR     &kp PLUS                     &en PRCNT  &en LEFT_BRACE  &kp RU_SEMI    &en RIGHT_BRACE   &kp EXCL          &kp RU_QMARK
-&trans              &kp RU_COMMA      &en STAR  &kp LS(NUMBER_5)  &kp RU_FSLH  &en DLLR                     &en AT     &en PIPE        &en TILDE      &kp LS(NUMBER_7)  &kp RU_DOT        &trans
-                                      &trans    &trans            &trans       &mo 5      &trans    &trans  &trans     &trans          &en AMPERSAND  &kp LS(N6)
+&kp RU_NUMERO  &en HASH      &en LT    &kp EQUAL         &en GT    &en LS(RBKT)                    &en CARET  &kp RU_DQT      &kp UNDER         &en LS(NUMBER_2)  &en LEFT_BRACKET  &en RIGHT_BRACKET
+&layer_en      &en BSLH      &kp LPAR  &kp MINUS         &kp RPAR  &kp PLUS                        &en PRCNT  &en LEFT_BRACE  &kp LS(NUMBER_8)  &en RIGHT_BRACE   &kp EXCL          &kp RU_QMARK
+&trans         &kp RU_COMMA  &en STAR  &kp LS(NUMBER_5)  &kp FSLH  &en DLLR                        &en AT     &en PIPE        &en TILDE         &kp LS(NUMBER_7)  &kp RU_DOT        &trans
+                             &trans    &trans            &trans    &mo 5         &trans    &trans  &trans     &trans          &en AMPERSAND     &kp LS(N6)
             >;
         };
 
