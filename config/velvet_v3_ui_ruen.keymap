@@ -51,25 +51,21 @@
             layers = <0>;
         };
 
-        combo_brace_ru {
-            bindings = <&braces_ru>;
-            key-positions = <21 19>;
-            layers = <1 4>;
-            require-prior-idle-ms = <0>;
-            timeout-ms = <0>;
-        };
-
-        combo_brace_en {
-            bindings = <&braces_en>;
-            key-positions = <21 19>;
-            layers = <0 3>;
-            timeout-ms = <0>;
-            require-prior-idle-ms = <0>;
-        };
-
         numlock {
             bindings = <&mo 9>;
             key-positions = <24 25>;
+        };
+
+        combo_braces_ru {
+            bindings = <&braces_ru>;
+            key-positions = <19 21>;
+            layers = <1 4>;
+        };
+
+        combo_braces_en {
+            bindings = <&braces_en>;
+            key-positions = <19 21>;
+            layers = <0 3>;
         };
     };
 
