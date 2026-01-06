@@ -165,10 +165,10 @@
 
         nav {
             bindings = <
-&trans    &kp N1  &kp N2    &kp N3   &kp N4                    &kp N5                                &kp N6    &kp N7        &kp N8         &kp N9       &kp N0         &trans
-&kp CAPS  &trans  &trans    &trans   &kp LG(LC(LS(NUMBER_4)))  &kp LC(LA(DELETE))                    &trans    &kp LEFT      &kp DOWN       &kp UP       &kp RIGHT      &trans
-&trans    &trans  &kp HOME  &kp INS  &kp END                   &kp DEL                               &kp CLCK  &kp LA(LEFT)  &kp PAGE_DOWN  &kp PAGE_UP  &kp LA(RIGHT)  &trans
-                  &trans    &trans   &trans                    &trans              &trans    &trans  &mo 5     &trans        &trans         &trans
+&trans    &kp N1  &kp N2    &kp N3   &kp N4                    &kp N5                                &kp N6    &kp N7        &kp N8              &kp N9            &kp N0         &trans
+&kp CAPS  &trans  &trans    &trans   &kp LG(LC(LS(NUMBER_4)))  &kp LC(LA(DELETE))                    &trans    &kp LEFT      &kp DOWN            &kp UP            &kp RIGHT      &trans
+&trans    &trans  &kp HOME  &kp INS  &kp END                   &kp DEL                               &kp CLCK  &kp LA(LEFT)  &kp LG(DOWN_ARROW)  &kp LG(UP_ARROW)  &kp LA(RIGHT)  &trans
+                  &trans    &trans   &trans                    &trans              &trans    &trans  &mo 5     &trans        &trans              &trans
             >;
 
             display-name = "Nav";
@@ -241,10 +241,10 @@
 
         layer_9 {
             bindings = <
-&none   &none   &none   &none   &none   &trans                    &trans  &kp N7  &kp N8  &kp N9      &braces_ru  &trans
-&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &kp N4  &kp N5  &kp N6      &trans      &trans
-&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &kp N1  &kp N2  &kp N3      &trans      &trans
-                &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &kp N0  &kp KP_DOT
+&none   &none   &none   &none   &none   &trans                    &trans  &kp N7  &kp N8  &kp N9   &kp ASTERISK  &kp FSLH
+&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &kp N4  &kp N5  &kp N6   &kp MINUS     &kp EQUAL
+&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &kp N1  &kp N2  &kp N3   &kp PLUS      &trans
+                &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &kp N0  &en DOT
             >;
         };
     };
