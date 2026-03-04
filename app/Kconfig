@@ -1,0 +1,3 @@
+config ZMK_BEHAVIOR_OS_LAYER
+    bool "OS Layer switching"
+    default n
