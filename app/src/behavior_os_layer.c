@@ -9,8 +9,8 @@ static void update_os_layers(uint8_t profile) {
     switch (profile) {
         case 0:
             // Профиль 0 (например, ПК) - оставляем только базовый слой (0)
-            zmk_keymap_layer_activate(0);
-            zmk_keymap_layer_activate(1);
+            // zmk_keymap_layer_activate(0);
+            // zmk_keymap_layer_activate(1);
             zmk_keymap_layer_deactivate(2); // Отключаем русский слой (если он под номером 1)
             zmk_keymap_layer_deactivate(3);
             // Если у вас несколько доп. слоев, отключаем их все
@@ -19,8 +19,6 @@ static void update_os_layers(uint8_t profile) {
         case 1:
             zmk_keymap_layer_activate(2);
             zmk_keymap_layer_activate(3);
-            zmk_keymap_layer_deactivate(0); // Отключаем русский слой (если он под номером 1)
-            zmk_keymap_layer_deactivate(1);
             break;
         // case 2:
             // Профиль 2 (например, Планшет) - можно настроить отдельно
