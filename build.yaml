@@ -27,4 +27,30 @@ include:
     shield: velvet_v3_ui_right_qube
 
   - board: ergohaven
+    shield: op36_left
+    snippet: studio-rpc-usb-uart
+    cmake-args: -DCONFIG_ZMK_STUDIO=y
+  - board: ergohaven
+    shield: op36_left
+    keymap: op36_ruen
+    snippet: studio-rpc-usb-uart
+    cmake-args: -DCONFIG_ZMK_STUDIO=y
+    artifact-name: op36_left_ruen-ergohaven-zmk
+  - board: ergohaven
+    shield: op36_right
+  - board: ergohaven
+    shield: op36_qube qube dongle_screen
+    snippet: studio-rpc-usb-uart
+    cmake-args: -DCONFIG_ZMK_STUDIO=y
+    artifact-name: op36_qube-ergohaven-zmk
+  - board: ergohaven
+    shield: op36_qube qube dongle_screen
+    keymap: op36_ruen
+    snippet: studio-rpc-usb-uart
+    cmake-args: -DCONFIG_ZMK_STUDIO=y
+    artifact-name: op36_qube_ruen-ergohaven-zmk
+  - board: ergohaven
+    shield: op36_left_qube
+
+  - board: ergohaven
     shield: settings_reset
