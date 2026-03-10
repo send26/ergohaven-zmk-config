@@ -204,5 +204,37 @@
 
             label = "mouse";
         };
+        mail {
+            bindings = <
+&trans  &trans  &trans  &trans  &trans      &trans                           &kp LG(N6)      &kp LG(N1)      &kp LG(NUMBER_2)      &kp LG(NUMBER_3)      &kp LG(NUMBER_4)      &kp LG(N5)
+&trans  &trans  &trans  &trans  &trans      &trans                           &kp LC(LG(N6))  &kp LC(LG(N1))  &kp LC(LG(NUMBER_2))  &kp LC(LG(NUMBER_3))  &kp LC(LG(NUMBER_4))  &kp LC(LG(NUMBER_5))
+&trans  &trans  &trans  &trans  &trans      &trans                           &kp LG(R)       &kp LS(LG(R))   &kp LS(LG(F))         &kp LA(LG(F))         &kp LS(LG(A))         &trans
+                &trans  &trans  &kp LG(N8)  &trans  &trans    &kp LS(LG(D))  &trans          &trans          &trans                &trans
+            >;
+
+            label = "mail";
+        };
+
+        things {
+            bindings = <
+&trans  &trans  &trans  &trans  &trans  &trans                           &kp LG(N1)     &kp LG(NUMBER_2)  &kp LG(NUMBER_4)  &kp LG(NUMBER_5)  &kp LS(LG(F))  &trans
+&trans  &trans  &trans  &trans  &trans  &trans                           &kp LS(LG(P))  &kp LS(LG(M))     &kp LG(R)         &kp LG(O)         &kp LS(LG(D))  &trans
+&trans  &trans  &trans  &trans  &trans  &trans                           &kp LG(LA(N))  &kp LS(LG(N))     &kp LS(LG(C))     &kp LS(LG(O))     &trans         &trans
+                &trans  &trans  &trans  &trans  &trans    &kp LS(LG(T))  &trans         &trans            &trans            &trans
+            >;
+
+            label = "things";
+        };
+
+        obsidian {
+            bindings = <
+&trans  &trans  &trans  &trans  &trans  &trans                    &kp LS(LG(M))      &trans                    &trans            &trans                  &trans                   &trans
+&trans  &trans  &trans  &trans  &trans  &trans                    &kp LC(LG(EQUAL))  &kp LS(LG(LEFT_BRACKET))  &kp LS(LG(RBKT))  &kp LA(LG(LEFT_ARROW))  &kp LG(LA(RIGHT_ARROW))  &trans
+&trans  &trans  &trans  &trans  &trans  &trans                    &trans             &trans                    &trans            &trans                  &trans                   &trans
+                &trans  &trans  &trans  &trans  &trans    &trans  &trans             &trans                    &trans            &trans
+            >;
+
+            label = "obsidian";
+        };
     };
 };
