@@ -132,7 +132,7 @@
             bindings = <
   &kp Q                &kp W        &kp E         &kp R            &kp T                                                       &kp Y  &kp U             &kp I         &kp O        &kp P
   &hml LEFT_CONTROL A  &hml LALT S  &hml LSHFT D  &hml LEFT_GUI F  &kp G                                                       &kp H  &hmr RIGHT_GUI J  &hmr RSHFT K  &hmr LALT L  &hmr RIGHT_CONTROL SEMICOLON
-  &kp Z                &kp X        &kp C         &kp V            &kp B                                                       &kp N  &kp M             &kp COMMA     &kp DOT      &kp SQT
+  &kp Z                &kp X        &kp C         &kp V            &kp B                                                       &kp N  &kp M             &kp COMMA     &kp DOT      &kp QUESTION
                                                   &kp TAB          &lt 4 SPACE  &lt 6 SPACE    &mt LS(LC(LG(LEFT_ALT))) ENTER  &mo 2  &kp BACKSPACE
             >;
 
@@ -165,7 +165,7 @@
             bindings = <
   &en HASH                        &en LT          &kp EQUAL         &en GT              &kp KP_MULTIPLY                    &en CARET  &kp DOUBLE_QUOTES  &en GRAVE           &kp LS(N2)  &kp GRAVE
   &hml LEFT_CONTROL RU_BACKSLASH  &hml LALT LPAR  &hml LSHFT MINUS  &hml LEFT_GUI RPAR  &kp KP_PLUS                        &kp PRCNT  &en LBRC           &hmr RSHFT RU_SEMI  &en RBRC    &hmr RIGHT_CONTROL EXCL
-  &en GRAVE                       &en BACKSLASH   &kp RU_COLON      &en SLASH           &en PIPE                           &en AT     &en DOLLAR         &kp LS(RU_N6)       &kp LS(N7)  &kp LS(SLASH)
+  &en GRAVE                       &en BACKSLASH   &kp LS(NUMBER_5)  &en SLASH           &en PIPE                           &en AT     &en DOLLAR         &kp LS(RU_N6)       &kp LS(N7)  &kp LS(SLASH)
                                                                     &trans              &mo 5            &trans    &trans  &none      &trans
             >;
 
