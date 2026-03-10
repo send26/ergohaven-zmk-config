@@ -1,1 +1,0 @@
-target_sources_ifdef(CONFIG_ZMK_BEHAVIOR_OS_LAYER app PRIVATE src/behavior_os_layer.c)
