@@ -12,17 +12,6 @@ static void update_os_layers(uint8_t profile) {
             zmk_keymap_layer_deactivate(2); // Отключаем русский слой (если он под номером 1)
             zmk_keymap_layer_deactivate(3);
             zmk_keymap_layer_activate(0);
-            zmk_keymap_layer_activate(1);
-            zmk_keymap_layer_activate(4);
-            zmk_keymap_layer_activate(5);
-            zmk_keymap_layer_activate(6);
-            zmk_keymap_layer_activate(7);
-            zmk_keymap_layer_activate(8);
-            zmk_keymap_layer_activate(9);
-            zmk_keymap_layer_activate(10);
-            zmk_keymap_layer_activate(11);
-            zmk_keymap_layer_activate(12);
-            zmk_keymap_layer_activate(13);
             
             // Если у вас несколько доп. слоев, отключаем их все
             // zmk_keymap_layer_deactivate(2);
@@ -31,17 +20,6 @@ static void update_os_layers(uint8_t profile) {
             zmk_keymap_layer_deactivate(0); // Отключаем русский слой (если он под номером 1)
             zmk_keymap_layer_deactivate(1);
             zmk_keymap_layer_activate(2);
-            zmk_keymap_layer_activate(3);
-            zmk_keymap_layer_activate(4);
-            zmk_keymap_layer_activate(5);
-            zmk_keymap_layer_activate(6);
-            zmk_keymap_layer_activate(7);
-            zmk_keymap_layer_activate(8);
-            zmk_keymap_layer_activate(9);
-            zmk_keymap_layer_activate(10);
-            zmk_keymap_layer_activate(11);
-            zmk_keymap_layer_activate(12);
-            zmk_keymap_layer_activate(13);
             break;
         // case 2:
             // Профиль 2 (например, Планшет) - можно настроить отдельно
