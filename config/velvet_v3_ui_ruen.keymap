@@ -87,6 +87,11 @@
             key-positions = <3 4>;
             layers = <0>;
         };
+
+        kha {
+            bindings = <&kp RU_CYRILLIC_HA>;
+            key-positions = <7 8>;
+        };
     };
 
     macros {
