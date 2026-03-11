@@ -130,7 +130,7 @@
 
         en {
             bindings = <
-  &kp Q                &kp W        &kp E         &kp R            &kp T                                                       &kp Y  &kp U             &kp I         &kp O        &kp P
+  &lt 7 Q              &kp W        &lt 8 E       &lt 9 R          &kp T                                                       &kp Y  &kp U             &kp I         &kp O        &kp P
   &hml LEFT_CONTROL A  &hml LALT S  &hml LSHFT D  &hml LEFT_GUI F  &kp G                                                       &kp H  &hmr RIGHT_GUI J  &hmr RSHFT K  &hmr LALT L  &hmr RIGHT_CONTROL SEMICOLON
   &kp Z                &kp X        &kp C         &kp V            &kp B                                                       &kp N  &kp M             &kp COMMA     &kp DOT      &kp QUESTION
                                                   &kp TAB          &lt 4 SPACE  &lt 6 SPACE    &mt LS(LC(LG(LEFT_ALT))) ENTER  &mo 2  &kp BACKSPACE
@@ -141,7 +141,7 @@
 
         ru {
             bindings = <
-  &kp RU_CYRILLIC_SHORT_I           &kp RU_CYRILLIC_TSE         &kp RU_CYRILLIC_U          &kp RU_CYRILLIC_KA           &kp RU_CYRILLIC_IE                                                 &kp RU_CYRILLIC_EN  &kp RU_CYRILLIC_GHE           &kp RU_CYRILLIC_SHA        &kp RU_CYRILLIC_SHCHA     &kp RU_CYRILLIC_ZE
+  &lt 7 RU_CYRILLIC_SHORT_I         &kp RU_CYRILLIC_TSE         &lt 8 RU_CYRILLIC_U        &lt 9 RU_CYRILLIC_KA         &kp RU_CYRILLIC_IE                                                 &kp RU_CYRILLIC_EN  &kp RU_CYRILLIC_GHE           &kp RU_CYRILLIC_SHA        &kp RU_CYRILLIC_SHCHA     &kp RU_CYRILLIC_ZE
   &hml LEFT_CONTROL RU_CYRILLIC_EF  &hml LALT RU_CYRILLIC_YERU  &hml LSHFT RU_CYRILLIC_VE  &hml LEFT_GUI RU_CYRILLIC_A  &kp RU_CYRILLIC_PE                                                 &kp RU_CYRILLIC_ER  &hmr RIGHT_GUI RU_CYRILLIC_O  &hmr RSHFT RU_CYRILLIC_EL  &hmr LALT RU_CYRILLIC_DE  &hmr RIGHT_CONTROL RU_CYRILLIC_ZHE
   &kp RU_CYRILLIC_YA                &kp RU_CYRILLIC_CHE         &kp RU_CYRILLIC_ES         &kp RU_CYRILLIC_EM           &kp RU_CYRILLIC_I                                                  &kp RU_CYRILLIC_TE  &kp RU_CYRILLIC_SOFT_SIGN     &kp RU_CYRILLIC_BE         &kp RU_CYRILLIC_YU        &kp RU_CYRILLIC_E
                                                                                            &kp TAB                      &lt 4 SPACE         &lt 6 SPACE    &mt LS(LC(LG(LEFT_ALT))) ENTER  &mo 3               &kp BACKSPACE
@@ -204,12 +204,13 @@
 
             label = "mouse";
         };
+
         mail {
             bindings = <
-&trans  &trans  &trans  &trans  &trans      &trans                           &kp LG(N6)      &kp LG(N1)      &kp LG(NUMBER_2)      &kp LG(NUMBER_3)      &kp LG(NUMBER_4)      &kp LG(N5)
-&trans  &trans  &trans  &trans  &trans      &trans                           &kp LC(LG(N6))  &kp LC(LG(N1))  &kp LC(LG(NUMBER_2))  &kp LC(LG(NUMBER_3))  &kp LC(LG(NUMBER_4))  &kp LC(LG(NUMBER_5))
-&trans  &trans  &trans  &trans  &trans      &trans                           &kp LG(R)       &kp LS(LG(R))   &kp LS(LG(F))         &kp LA(LG(F))         &kp LS(LG(A))         &trans
-                &trans  &trans  &kp LG(N8)  &trans  &trans    &kp LS(LG(D))  &trans          &trans          &trans                &trans
+  &trans  &trans  &trans  &trans      &trans                           &kp LG(NUMBER_6)  &kp LG(NUMBER_1)  &kp LG(NUMBER_2)  &kp LG(NUMBER_3)  &kp LG(NUMBER_4)
+  &trans  &trans  &trans  &trans      &trans                           &kp LG(LC(N5))    &kp LG(LC(N1))    &kp LG(LC(N2))    &kp LG(LC(N3))    &kp LG(LC(N4))
+  &trans  &trans  &trans  &trans      &trans                           &kp LG(R)         &kp LS(LG(R))     &kp LS(LG(F))     &kp LG(F)         &kp LS(LG(A))
+                          &kp LG(N8)  &trans  &trans    &kp LS(LG(D))  &trans            &trans
             >;
 
             label = "mail";
@@ -217,10 +218,10 @@
 
         things {
             bindings = <
-&trans  &trans  &trans  &trans  &trans  &trans                           &kp LG(N1)     &kp LG(NUMBER_2)  &kp LG(NUMBER_4)  &kp LG(NUMBER_5)  &kp LS(LG(F))  &trans
-&trans  &trans  &trans  &trans  &trans  &trans                           &kp LS(LG(P))  &kp LS(LG(M))     &kp LG(R)         &kp LG(O)         &kp LS(LG(D))  &trans
-&trans  &trans  &trans  &trans  &trans  &trans                           &kp LG(LA(N))  &kp LS(LG(N))     &kp LS(LG(C))     &kp LS(LG(O))     &trans         &trans
-                &trans  &trans  &trans  &trans  &trans    &kp LS(LG(T))  &trans         &trans            &trans            &trans
+  &trans  &trans  &trans  &trans  &trans                    &kp LG(N1)     &kp LG(N2)     &kp LG(N4)     &kp LG(N5)     &kp LS(LG(F))
+  &trans  &trans  &trans  &trans  &trans                    &kp LS(LG(P))  &kp LS(LG(M))  &kp LG(R)      &kp LG(O)      &kp LS(LG(D))
+  &trans  &trans  &trans  &trans  &trans                    &kp LG(LA(N))  &kp LS(LG(N))  &kp LS(LG(C))  &kp LS(LG(O))  &trans
+                          &trans  &trans  &trans    &trans  &trans         &trans
             >;
 
             label = "things";
@@ -228,10 +229,10 @@
 
         obsidian {
             bindings = <
-&trans  &trans  &trans  &trans  &trans  &trans                    &kp LS(LG(M))      &trans                    &trans            &trans                  &trans                   &trans
-&trans  &trans  &trans  &trans  &trans  &trans                    &kp LC(LG(EQUAL))  &kp LS(LG(LEFT_BRACKET))  &kp LS(LG(RBKT))  &kp LA(LG(LEFT_ARROW))  &kp LG(LA(RIGHT_ARROW))  &trans
-&trans  &trans  &trans  &trans  &trans  &trans                    &trans             &trans                    &trans            &trans                  &trans                   &trans
-                &trans  &trans  &trans  &trans  &trans    &trans  &trans             &trans                    &trans            &trans
+  &kp LG(N1)  &kp LG(N2)  &kp LG(N3)  &kp LG(N4)  &kp LG(N5)                    &kp LS(LG(M))      &kp LG(T)         &kp LS(LG(I))     &trans            &kp LG(P)
+  &trans      &trans      &trans      &trans      &trans                        &kp LG(LC(EQUAL))  &kp LS(LG(LBKT))  &kp LS(LG(RBKT))  &kp LA(LG(LEFT))  &kp LA(LG(RIGHT))
+  &trans      &trans      &trans      &trans      &trans                        &kp LG(N)          &trans            &trans            &kp LA(UP)        &kp LA(DOWN)
+                                      &trans      &trans      &trans    &trans  &trans             &trans
             >;
 
             label = "obsidian";
