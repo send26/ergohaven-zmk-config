@@ -146,9 +146,9 @@
 
         en {
             bindings = <
-  &lt 7 Q              &kp W        &lt 8 E       &lt 9 R          &kp T                                                       &kp Y  &kp U             &kp I         &kp O        &td_p
-  &hml LEFT_CONTROL A  &hml LALT S  &hml LSHFT D  &hml LEFT_GUI F  &kp G                                                       &kp H  &hmr RIGHT_GUI J  &hmr RSHFT K  &hmr LALT L  &hmr RIGHT_CONTROL SEMICOLON
-  &kp Z                &kp X        &kp C         &kp V            &kp B                                                       &kp N  &kp M             &kp COMMA     &kp DOT      &kp QUESTION
+  &lt 7 Q              &kp W        &lt 8 E       &lt 9 R          &kp T                                                       &kp Y  &kp U            &kp I         &kp O        &td_p
+  &hml LEFT_CONTROL A  &hml LALT S  &hml LSHFT D  &hml LEFT_GUI F  &kp G                                                       &kp H  &hmr LEFT_GUI J  &hmr RSHFT K  &hmr LALT L  &hmr RIGHT_CONTROL SEMICOLON
+  &kp Z                &kp X        &kp C         &kp V            &kp B                                                       &kp N  &kp M            &kp COMMA     &kp DOT      &kp QUESTION
                                                   &kp TAB          &lt 4 SPACE  &lt 6 SPACE    &mt LS(LC(LG(LEFT_ALT))) ENTER  &mo 2  &kp BACKSPACE
             >;
 
@@ -157,9 +157,9 @@
 
         ru {
             bindings = <
-  &lt 7 RU_CYRILLIC_SHORT_I         &kp RU_CYRILLIC_TSE         &lt 8 RU_CYRILLIC_U        &lt 9 RU_CYRILLIC_KA         &kp RU_CYRILLIC_IE                                                 &kp RU_CYRILLIC_EN  &kp RU_CYRILLIC_GHE           &kp RU_CYRILLIC_SHA        &kp RU_CYRILLIC_SHCHA     &td_ze
-  &hml LEFT_CONTROL RU_CYRILLIC_EF  &hml LALT RU_CYRILLIC_YERU  &hml LSHFT RU_CYRILLIC_VE  &hml LEFT_GUI RU_CYRILLIC_A  &kp RU_CYRILLIC_PE                                                 &kp RU_CYRILLIC_ER  &hmr RIGHT_GUI RU_CYRILLIC_O  &hmr RSHFT RU_CYRILLIC_EL  &hmr LALT RU_CYRILLIC_DE  &hmr RIGHT_CONTROL RU_CYRILLIC_ZHE
-  &kp RU_CYRILLIC_YA                &kp RU_CYRILLIC_CHE         &kp RU_CYRILLIC_ES         &kp RU_CYRILLIC_EM           &kp RU_CYRILLIC_I                                                  &kp RU_CYRILLIC_TE  &kp RU_CYRILLIC_SOFT_SIGN     &kp RU_CYRILLIC_BE         &kp RU_CYRILLIC_YU        &kp RU_CYRILLIC_E
+  &lt 7 RU_CYRILLIC_SHORT_I         &kp RU_CYRILLIC_TSE         &lt 8 RU_CYRILLIC_U        &lt 9 RU_CYRILLIC_KA         &kp RU_CYRILLIC_IE                                                 &kp RU_CYRILLIC_EN  &kp RU_CYRILLIC_GHE          &kp RU_CYRILLIC_SHA        &kp RU_CYRILLIC_SHCHA     &td_ze
+  &hml LEFT_CONTROL RU_CYRILLIC_EF  &hml LALT RU_CYRILLIC_YERU  &hml LSHFT RU_CYRILLIC_VE  &hml LEFT_GUI RU_CYRILLIC_A  &kp RU_CYRILLIC_PE                                                 &kp RU_CYRILLIC_ER  &hmr LEFT_GUI RU_CYRILLIC_O  &hmr RSHFT RU_CYRILLIC_EL  &hmr LALT RU_CYRILLIC_DE  &hmr RIGHT_CONTROL RU_CYRILLIC_ZHE
+  &kp RU_CYRILLIC_YA                &kp RU_CYRILLIC_CHE         &kp RU_CYRILLIC_ES         &kp RU_CYRILLIC_EM           &kp RU_CYRILLIC_I                                                  &kp RU_CYRILLIC_TE  &kp RU_CYRILLIC_SOFT_SIGN    &kp RU_CYRILLIC_BE         &kp RU_CYRILLIC_YU        &kp RU_CYRILLIC_E
                                                                                            &kp TAB                      &lt 4 SPACE         &lt 6 SPACE    &mt LS(LC(LG(LEFT_ALT))) ENTER  &mo 3               &kp BACKSPACE
             >;
 
@@ -168,9 +168,9 @@
 
         sym_en {
             bindings = <
-  &kp HASH                &kp LT          &kp EQUAL         &kp GT              &kp ASTERISK                    &kp CARET  &kp LBKT             &kp GRAVE              &kp RBKT        &kp DLLR
-  &hml LEFT_CONTROL BSLH  &hml LALT LPAR  &hml LSHFT MINUS  &hml LEFT_GUI RPAR  &kp PLUS                        &kp PRCNT  &hmr RIGHT_GUI LBRC  &hmr RSHFT UNDERSCORE  &hmr LALT RBRC  &hmr RIGHT_CONTROL EXCL
-  &kp AMPERSAND           &kp BACKSLASH   &kp COLON         &kp FSLH            &kp PIPE                        &kp AT     &kp DOLLAR           &kp COMMA              &kp DOT         &kp QMARK
+  &kp HASH                &kp LT          &kp EQUAL         &kp GT              &kp ASTERISK                    &kp CARET  &kp LBKT            &kp GRAVE              &kp RBKT        &kp DLLR
+  &hml LEFT_CONTROL BSLH  &hml LALT LPAR  &hml LSHFT MINUS  &hml LEFT_GUI RPAR  &kp PLUS                        &kp PRCNT  &hmr LEFT_GUI LBRC  &hmr RSHFT UNDERSCORE  &hmr LALT RBRC  &hmr RIGHT_CONTROL EXCL
+  &kp AMPERSAND           &kp BACKSLASH   &kp COLON         &kp FSLH            &kp PIPE                        &kp AT     &kp DOLLAR          &kp COMMA              &kp DOT         &kp QMARK
                                                             &trans              &mo 5         &trans    &trans  &none      &trans
             >;
 
@@ -190,9 +190,9 @@
 
         nav {
             bindings = <
-  &kp N1                 &kp N2    &kp N3     &kp N4                        &kp N5                        &kp N6           &kp N7               &kp N8           &kp N9        &kp N0
-  &hml LEFT_CONTROL ESC  &kp LALT  &kp LSHFT  &hml LEFT_GUI LS(LC(LG(N4)))  &kp ENTER                     &kp PRINTSCREEN  &hmr RIGHT_GUI LEFT  &hmr RSHFT DOWN  &hmr LALT UP  &hmr RIGHT_CONTROL RIGHT
-  &layer_en              &kp HOME  &kp INS    &kp END                       &kp DELETE                    &kp CAPS         &none                &kp PG_DN        &kp PG_UP     &layer_ru
+  &kp N1                 &kp N2    &kp N3     &kp N4                        &kp N5                        &kp N6           &kp N7              &kp N8           &kp N9        &kp N0
+  &hml LEFT_CONTROL ESC  &kp LALT  &kp LSHFT  &hml LEFT_GUI LS(LC(LG(N4)))  &kp ENTER                     &kp PRINTSCREEN  &hmr LEFT_GUI LEFT  &hmr RSHFT DOWN  &hmr LALT UP  &hmr RIGHT_CONTROL RIGHT
+  &layer_en              &kp HOME  &kp INS    &kp END                       &kp DELETE                    &kp CAPS         &none               &kp PG_DN        &kp PG_UP     &layer_ru
                                               &trans                        &none       &trans    &trans  &mo 5            &trans
             >;
 
@@ -201,9 +201,9 @@
 
         adj {
             bindings = <
-  &bootloader       &kp F1        &kp F2         &kp F3            &kp F4                     &bt BT_SEL 0  &bt BT_SEL 1             &bt BT_SEL 2       &bt BT_SEL 3        &bt BT_CLR
-  &kp LEFT_CONTROL  &hml LALT F5  &hml LSHFT F6  &hml LEFT_GUI F7  &kp F8                     &out OUT_BLE  &hmr RIGHT_GUI C_VOL_DN  &hmr RSHFT C_MUTE  &hmr LALT C_VOL_UP  &kp RIGHT_CONTROL
-  &none             &kp F9        &kp F10        &kp F11           &kp F12                    &out OUT_USB  &kp C_PREV               &kp C_PP           &kp C_NEXT          &studio_unlock
+  &bootloader       &kp F1        &kp F2         &kp F3            &kp F4                     &bt BT_SEL 0  &bt BT_SEL 1            &bt BT_SEL 2       &bt BT_SEL 3        &bt BT_CLR
+  &kp LEFT_CONTROL  &hml LALT F5  &hml LSHFT F6  &hml LEFT_GUI F7  &kp F8                     &out OUT_BLE  &hmr LEFT_GUI C_VOL_DN  &hmr RSHFT C_MUTE  &hmr LALT C_VOL_UP  &kp RIGHT_CONTROL
+  &none             &kp F9        &kp F10        &kp F11           &kp F12                    &out OUT_USB  &kp C_PREV              &kp C_PP           &kp C_NEXT          &studio_unlock
                                                  &trans            &trans   &trans    &trans  &trans        &trans
             >;
 
@@ -212,10 +212,10 @@
 
         mouse {
             bindings = <
-  &trans  &trans  &trans  &trans  &trans                    &trans  &msc SCRL_UP    &mmv MOVE_UP    &msc SCRL_LEFT   &trans
-  &trans  &trans  &trans  &trans  &trans                    &trans  &mmv MOVE_LEFT  &mkp MB1        &mmv MOVE_RIGHT  &mkp MB2
-  &trans  &trans  &trans  &trans  &trans                    &trans  &msc SCRL_DOWN  &mmv MOVE_DOWN  &msc SCRL_RIGHT  &trans
-                          &trans  &trans  &trans    &trans  &trans  &trans
+  &trans  &trans  &trans  &trans  &trans                    &trans        &msc SCRL_UP    &mmv MOVE_UP    &msc SCRL_LEFT   &trans
+  &trans  &trans  &trans  &trans  &trans                    &kp LEFT_GUI  &mmv MOVE_LEFT  &mkp MB1        &mmv MOVE_RIGHT  &mkp MB2
+  &trans  &trans  &trans  &trans  &trans                    &trans        &msc SCRL_DOWN  &mmv MOVE_DOWN  &msc SCRL_RIGHT  &trans
+                          &trans  &trans  &trans    &trans  &trans        &trans
             >;
 
             label = "mouse";
@@ -234,10 +234,10 @@
 
         things {
             bindings = <
-  &trans  &trans  &trans  &trans  &trans                    &kp LG(N1)     &kp LG(N2)     &kp LG(N4)     &kp LG(N5)     &kp LS(LG(F))
-  &trans  &trans  &trans  &trans  &trans                    &kp LS(LG(P))  &kp LS(LG(M))  &kp LG(R)      &kp LG(O)      &kp LS(LG(D))
-  &trans  &trans  &trans  &trans  &trans                    &kp LG(LA(N))  &kp LS(LG(N))  &kp LS(LG(C))  &kp LS(LG(O))  &trans
-                          &trans  &trans  &trans    &trans  &trans         &trans
+  &trans  &trans  &trans  &trans  &trans                    &kp LG(N1)         &kp LG(N2)     &kp LG(N4)     &kp LG(N5)     &kp LS(LG(F))
+  &trans  &trans  &trans  &trans  &trans                    &kp LS(LG(P))      &kp LS(LG(M))  &kp LG(R)      &kp LG(O)      &kp LS(LG(D))
+  &trans  &trans  &trans  &trans  &trans                    &kp LG(LA(LC(N)))  &kp LS(LG(N))  &kp LS(LG(C))  &kp LS(LG(O))  &trans
+                          &trans  &trans  &trans    &trans  &trans             &trans
             >;
 
             label = "things";
