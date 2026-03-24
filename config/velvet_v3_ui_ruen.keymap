@@ -272,10 +272,10 @@
 
         things {
             bindings = <
-&trans  &trans  &trans  &trans  &trans  &trans                           &kp LG(N1)     &kp LG(NUMBER_2)  &kp LG(NUMBER_4)  &kp LG(NUMBER_5)  &kp LS(LG(F))  &trans
-&trans  &trans  &trans  &trans  &trans  &trans                           &kp LS(LG(P))  &kp LS(LG(M))     &kp LG(R)         &kp LG(O)         &kp LS(LG(D))  &trans
-&trans  &trans  &trans  &trans  &trans  &trans                           &kp LG(LA(N))  &kp LS(LG(N))     &kp LS(LG(C))     &kp LS(LG(O))     &trans         &trans
-                &trans  &trans  &trans  &trans  &trans    &kp LS(LG(T))  &trans         &trans            &trans            &trans
+&trans  &trans  &trans  &trans  &trans  &trans                           &kp LG(N1)         &kp LG(NUMBER_2)  &kp LG(NUMBER_4)  &kp LG(NUMBER_5)  &kp LS(LG(F))  &trans
+&trans  &trans  &trans  &trans  &trans  &trans                           &kp LS(LG(P))      &kp LS(LG(M))     &kp LG(R)         &kp LG(O)         &kp LS(LG(D))  &trans
+&trans  &trans  &trans  &trans  &trans  &trans                           &kp LG(LA(LC(N)))  &kp LS(LG(N))     &kp LS(LG(C))     &kp LS(LG(O))     &trans         &trans
+                &trans  &trans  &trans  &trans  &trans    &kp LS(LG(T))  &trans             &trans            &trans            &trans
             >;
 
             label = "things";
