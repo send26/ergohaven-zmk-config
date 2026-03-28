@@ -157,6 +157,18 @@
             bindings = <&to 0 &kp CAPSLOCK>;
             label = "IPAD_EN";
         };
+
+        cmdclick: cmdclick {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings =
+                <&macro_press>,
+                <&kp LEFT_GUI &mkp MB1>,
+                <&macro_release>,
+                <&mkp MB1 &kp LEFT_GUI>;
+
+            label = "CMDCLICK";
+        };
     };
 
     keymap {
@@ -228,10 +240,10 @@
 
         mouse {
             bindings = <
-&trans  &trans  &trans    &trans    &trans    &trans                    &trans  &trans    &trans    &trans    &trans  &trans
-&trans  &mo 7   &mkp MB3  &mkp MB2  &mkp MB1  &mo 8                     &mo 8   &mkp MB1  &mkp MB2  &mkp MB3  &mo 7   &trans
-&trans  &trans  &trans    &trans    &trans    &trans                    &trans  &trans    &trans    &trans    &trans  &trans
-                &trans    &trans    &trans    &mo 4   &trans    &trans  &trans  &trans    &trans    &trans
+&trans  &trans  &trans    &trans    &cmdclick  &trans                    &trans  &trans    &trans    &trans    &trans  &trans
+&trans  &mo 7   &mkp MB3  &mkp MB2  &mkp MB1   &mo 8                     &mo 8   &mkp MB1  &mkp MB2  &mkp MB3  &mo 7   &trans
+&trans  &trans  &trans    &trans    &trans     &trans                    &trans  &trans    &trans    &trans    &trans  &trans
+                &trans    &trans    &trans     &mo 4   &trans    &trans  &trans  &trans    &trans    &trans
             >;
 
             display-name = "Mouse";
