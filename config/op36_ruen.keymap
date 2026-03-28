@@ -149,7 +149,7 @@
   &lt 7 Q              &kp W        &lt 8 E       &lt 9 R          &kp T                                                       &kp Y            &kp U            &kp I         &kp O        &td_p
   &hml LEFT_CONTROL A  &hml LALT S  &hml LSHFT D  &hml LEFT_GUI F  &kp G                                                       &kp H            &hmr LEFT_GUI J  &hmr RSHFT K  &hmr LALT L  &hmr RIGHT_CONTROL SEMICOLON
   &kp Z                &kp X        &kp C         &kp V            &kp B                                                       &kp N            &kp M            &kp COMMA     &kp DOT      &kp QUESTION
-                                                  &kp TAB          &lt 4 SPACE  &lt 6 SPACE    &mt LS(LC(LG(LEFT_ALT))) ENTER  &lt 2 BACKSPACE  &kp BACKSPACE
+                                                  &layer_ru        &lt 4 SPACE  &lt 6 SPACE    &mt LS(LC(LG(LEFT_ALT))) ENTER  &lt 2 BACKSPACE  &kp TAB
             >;
 
             display-name = "Base";
@@ -160,7 +160,7 @@
   &lt 7 RU_CYRILLIC_SHORT_I         &kp RU_CYRILLIC_TSE         &lt 8 RU_CYRILLIC_U        &lt 9 RU_CYRILLIC_KA         &kp RU_CYRILLIC_IE                                                 &kp RU_CYRILLIC_EN  &kp RU_CYRILLIC_GHE          &kp RU_CYRILLIC_SHA        &kp RU_CYRILLIC_SHCHA     &td_ze
   &hml LEFT_CONTROL RU_CYRILLIC_EF  &hml LALT RU_CYRILLIC_YERU  &hml LSHFT RU_CYRILLIC_VE  &hml LEFT_GUI RU_CYRILLIC_A  &kp RU_CYRILLIC_PE                                                 &kp RU_CYRILLIC_ER  &hmr LEFT_GUI RU_CYRILLIC_O  &hmr RSHFT RU_CYRILLIC_EL  &hmr LALT RU_CYRILLIC_DE  &hmr RIGHT_CONTROL RU_CYRILLIC_ZHE
   &kp RU_CYRILLIC_YA                &kp RU_CYRILLIC_CHE         &kp RU_CYRILLIC_ES         &kp RU_CYRILLIC_EM           &kp RU_CYRILLIC_I                                                  &kp RU_CYRILLIC_TE  &kp RU_CYRILLIC_SOFT_SIGN    &kp RU_CYRILLIC_BE         &kp RU_CYRILLIC_YU        &kp RU_CYRILLIC_E
-                                                                                           &kp TAB                      &lt 4 SPACE         &lt 6 SPACE    &mt LS(LC(LG(LEFT_ALT))) ENTER  &lt 3 BACKSPACE     &kp BACKSPACE
+                                                                                           &layer_en                    &lt 4 SPACE         &lt 6 SPACE    &mt LS(LC(LG(LEFT_ALT))) ENTER  &lt 3 BACKSPACE     &kp TAB
             >;
 
             display-name = "Ru";
