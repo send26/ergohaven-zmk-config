@@ -190,10 +190,10 @@
 
         nav {
             bindings = <
-  &kp N1                 &kp N2     &kp N3     &kp N4                        &kp N5                        &kp N6           &kp N7              &kp N8           &kp N9        &kp N0
-  &hml LEFT_CONTROL ESC  &kp LALT   &kp LSHFT  &hml LEFT_GUI LS(LC(LG(N4)))  &kp ENTER                     &kp PRINTSCREEN  &hmr LEFT_GUI LEFT  &hmr RSHFT DOWN  &hmr LALT UP  &hmr RIGHT_CONTROL RIGHT
-  &layer_en              &kp LG(X)  &kp LG(C)  &kp LG(V)                     &kp DELETE                    &kp CAPS         &none               &kp PG_DN        &kp PG_UP     &layer_ru
-                                               &trans                        &none       &trans    &trans  &mo 5            &trans
+  &kp N1                 &kp N2     &kp N3     &kp N4                        &kp N5                        &kp N6          &kp N7                    &kp N8               &kp N9                 &kp N0
+  &hml LEFT_CONTROL ESC  &kp LALT   &kp LSHFT  &hml LEFT_GUI LS(LC(LG(N4)))  &kp ENTER                     &kp LEFT_ARROW  &hmr LEFT_GUI DOWN_ARROW  &hmr RSHFT UP_ARROW  &hmr LALT RIGHT_ARROW  &kp RIGHT_CONTROL
+  &layer_en              &kp LG(X)  &kp LG(C)  &kp LG(V)                     &kp DELETE                    &kp CAPS        &none                     &kp PG_DN            &kp PG_UP              &layer_ru
+                                               &trans                        &none       &trans    &trans  &mo 5           &trans
             >;
 
             display-name = "Nav";
