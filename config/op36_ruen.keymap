@@ -168,7 +168,7 @@
 
         sym_en {
             bindings = <
-  &kp HASH                &kp LT          &kp EQUAL         &kp GT              &kp ASTERISK                    &kp CARET  &kp LBKT            &kp GRAVE              &kp RBKT        &kp DLLR
+  &kp HASH                &kp LT          &kp EQUAL         &kp GT              &kp ASTERISK                    &kp CARET  &kp DQT             &kp GRAVE              &kp SQT         &kp LEFT_BRACKET
   &hml LEFT_CONTROL BSLH  &hml LALT LPAR  &hml LSHFT MINUS  &hml LEFT_GUI RPAR  &kp PLUS                        &kp PRCNT  &hmr LEFT_GUI LBRC  &hmr RSHFT UNDERSCORE  &hmr LALT RBRC  &hmr RIGHT_CONTROL EXCL
   &kp AMPERSAND           &kp BACKSLASH   &kp COLON         &kp FSLH            &kp PIPE                        &kp AT     &kp DOLLAR          &kp COMMA              &kp DOT         &kp QMARK
                                                             &trans              &mo 5         &trans    &trans  &none      &trans
@@ -179,7 +179,7 @@
 
         sym_ru {
             bindings = <
-  &en HASH                        &en LT          &kp EQUAL         &en GT              &kp KP_MULTIPLY                    &en CARET  &kp DOUBLE_QUOTES  &en GRAVE           &kp LS(N2)  &kp GRAVE
+  &en HASH                        &en LT          &kp EQUAL         &en GT              &kp KP_MULTIPLY                    &en CARET  &kp DOUBLE_QUOTES  &en GRAVE           &kp LS(N2)  &en LEFT_BRACKET
   &hml LEFT_CONTROL RU_BACKSLASH  &hml LALT LPAR  &hml LSHFT MINUS  &hml LEFT_GUI RPAR  &kp KP_PLUS                        &kp PRCNT  &en LBRC           &hmr RSHFT RU_SEMI  &en RBRC    &hmr RIGHT_CONTROL EXCL
   &en GRAVE                       &en BACKSLASH   &kp LS(NUMBER_5)  &en SLASH           &en PIPE                           &en AT     &en DOLLAR         &kp LS(RU_N6)       &kp LS(N7)  &kp LS(SLASH)
                                                                     &trans              &mo 5            &trans    &trans  &none      &trans
