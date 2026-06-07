@@ -1,0 +1,4 @@
+name: ergohaven-zmk-config
+build:
+  kconfig: Kconfig
+  cmake: .

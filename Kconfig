@@ -1,0 +1,4 @@
+config OP36_LAYER_SYNC
+  bool "Enable OP36 layer sync over Raw HID"
+  depends on RAW_HID
+  default n

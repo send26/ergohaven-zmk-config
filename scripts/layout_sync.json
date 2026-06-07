@@ -1,0 +1,8 @@
+{
+  "layouts": [
+    "com.apple.keylayout.ABC",
+    "com.apple.keylayout.Russian"
+  ],
+  "poll_interval_ms": 500,
+  "reconnect_delay_ms": 3000
+}
