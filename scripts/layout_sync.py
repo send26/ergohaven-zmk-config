@@ -13,8 +13,7 @@ from pathlib import Path
 import hid
 import objc
 from AppKit import NSDate, NSDefaultRunLoopMode, NSRunLoop
-from Foundation import NSDistributedNotificationCenter, NSObject
-from Quartz import TISCopyCurrentKeyboardInputSource, kTISPropertyInputSourceID
+from Foundation import NSBundle, NSDistributedNotificationCenter, NSObject
 
 RAW_HID_USAGE_PAGE = 0xFF60
 RAW_HID_USAGE = 0x61
@@ -28,17 +27,60 @@ INPUT_SOURCE_NOTIFICATIONS = (
 )
 
 
+def _load_tis_api() -> dict:
+    try:
+        from HIToolbox import (  # pyobjc-framework-ApplicationServices
+            TISCopyCurrentKeyboardInputSource,
+            TISGetInputSourceProperty,
+            kTISPropertyInputSourceID,
+        )
+
+        return {
+            "TISCopyCurrentKeyboardInputSource": TISCopyCurrentKeyboardInputSource,
+            "TISGetInputSourceProperty": TISGetInputSourceProperty,
+            "kTISPropertyInputSourceID": kTISPropertyInputSourceID,
+        }
+    except ImportError:
+        bundle = NSBundle.bundleWithIdentifier_("com.apple.HIToolbox")
+        if bundle is None:
+            raise RuntimeError("HIToolbox is not available on this system") from None
+
+        api: dict = {}
+        objc.loadBundleFunctions(
+            bundle,
+            api,
+            [
+                ("TISCopyCurrentKeyboardInputSource", "@"),
+                ("TISGetInputSourceProperty", "@@@"),
+            ],
+        )
+        objc.loadBundleVariables(
+            bundle,
+            api,
+            [
+                ("kTISPropertyInputSourceID", "@"),
+            ],
+        )
+        return api
+
+
+_TIS = _load_tis_api()
+
+
 def load_config(path: Path) -> dict:
     with path.open(encoding="utf-8") as config_file:
         return json.load(config_file)
 
 
 def current_input_source_id() -> str | None:
-    source = TISCopyCurrentKeyboardInputSource()
+    source = _TIS["TISCopyCurrentKeyboardInputSource"]()
     if source is None:
         return None
 
-    source_id = source.get(kTISPropertyInputSourceID)
+    source_id = _TIS["TISGetInputSourceProperty"](
+        source,
+        _TIS["kTISPropertyInputSourceID"],
+    )
     if source_id is None:
         return None
 
