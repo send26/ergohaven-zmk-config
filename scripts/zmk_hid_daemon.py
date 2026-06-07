@@ -6,6 +6,8 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+import os
+import shutil
 import subprocess
 import sys
 import threading
@@ -25,6 +27,7 @@ HID_CMD_LAYER = 0xAD
 REPORT_SIZE = 32
 
 DEFAULT_LAYOUT_CONFIG = Path(__file__).with_name("layout_sync.json")
+DEFAULT_KEYBOARDS_CONFIG = Path(__file__).with_name("keyboards.json")
 DEFAULT_LAYERS_CONFIG = Path(__file__).with_name("layers.json")
 DEFAULT_STATE_DIR = Path.home() / ".cache" / "zmk_layer"
 DEFAULT_STATE_FILE = DEFAULT_STATE_DIR / "state.json"
@@ -151,25 +154,61 @@ def layout_index_for_source(source_id: str, layouts: list[str]) -> int | None:
         return None
 
 
-def find_raw_hid_device() -> hid.Device | None:
+def find_raw_hid_device() -> tuple[hid.Device, dict] | None:
     for device_info in hid.enumerate():
         if (
             device_info.get("usage_page") == RAW_HID_USAGE_PAGE
             and device_info.get("usage") == RAW_HID_USAGE
         ):
-            return hid.Device(path=device_info["path"])
+            return hid.Device(path=device_info["path"]), device_info
     return None
 
 
-def send_layout_report(device: hid.Device, layout_index: int) -> None:
-    payload = [HID_CMD_LAYOUT, layout_index] + [0x00] * (REPORT_SIZE - 2)
-    report = bytes([0x00] + payload)
-    device.write(report)
+def detect_keyboard(
+    device_info: dict,
+    keyboards_config: dict,
+    override: str | None = None,
+) -> str:
+    if override:
+        return override
+
+    keyboards = keyboards_config.get("keyboards", {})
+    haystack = " ".join(
+        str(device_info.get(key, "") or "")
+        for key in ("manufacturer_string", "product_string", "product", "manufacturer", "serial_number")
+    ).lower()
+
+    for keyboard_id, keyboard in keyboards.items():
+        for needle in keyboard.get("match", []):
+            if needle.lower() in haystack:
+                return keyboard_id
+
+    return keyboards_config.get("default", next(iter(keyboards), ""))
 
 
-def write_layer_state(state_file: Path, layer_index: int, layers_config: list[dict]) -> None:
+def layers_file_for_keyboard(keyboards_config: dict, keyboard_id: str, scripts_dir: Path) -> Path:
+    keyboard = keyboards_config.get("keyboards", {}).get(keyboard_id, {})
+    layers_file = keyboard.get("layers_file", "layers.json")
+    return scripts_dir / layers_file
+
+
+def load_layers_for_keyboard(keyboards_config: dict, keyboard_id: str, scripts_dir: Path) -> list[dict]:
+    layers_path = layers_file_for_keyboard(keyboards_config, keyboard_id, scripts_dir)
+    if not layers_path.exists():
+        logging.warning("Layers file not found for %s: %s", keyboard_id, layers_path)
+        return []
+    return load_json_config(layers_path)
+
+
+def write_layer_state(
+    state_file: Path,
+    layer_index: int,
+    layers_config: list[dict],
+    keyboard_id: str,
+) -> None:
     layer_meta = next((layer for layer in layers_config if layer["index"] == layer_index), None)
     state = {
+        "keyboard": keyboard_id,
         "layer": layer_index,
         "id": layer_meta["id"] if layer_meta else f"layer_{layer_index}",
         "label": layer_meta["label"] if layer_meta else f"L{layer_index}",
@@ -180,16 +219,44 @@ def write_layer_state(state_file: Path, layer_index: int, layers_config: list[di
     state_file.write_text(json.dumps(state) + "\n", encoding="utf-8")
 
 
+def send_layout_report(device: hid.Device, layout_index: int) -> None:
+    payload = [HID_CMD_LAYOUT, layout_index] + [0x00] * (REPORT_SIZE - 2)
+    report = bytes([0x00] + payload)
+    device.write(report)
+
+
+def find_sketchybar() -> str | None:
+    for candidate in (
+        "/opt/homebrew/bin/sketchybar",
+        "/usr/local/bin/sketchybar",
+        shutil.which("sketchybar"),
+    ):
+        if candidate and Path(candidate).exists():
+            return candidate
+    return None
+
+
 def trigger_sketchybar_update() -> None:
+    sketchybar = find_sketchybar()
+    if sketchybar is None:
+        logging.warning("SketchyBar binary not found, skipping trigger")
+        return
+
     try:
-        subprocess.run(
-            ["sketchybar", "--trigger", "zmk_layer_update"],
+        result = subprocess.run(
+            [sketchybar, "--trigger", "zmk_layer_update"],
             check=False,
             capture_output=True,
             text=True,
         )
+        if result.returncode != 0:
+            logging.warning(
+                "SketchyBar trigger failed (%s): %s",
+                result.returncode,
+                result.stderr.strip(),
+            )
     except OSError as error:
-        logging.debug("SketchyBar trigger failed: %s", error)
+        logging.warning("SketchyBar trigger failed: %s", error)
 
 
 class InputSourceObserver(NSObject):
@@ -209,18 +276,29 @@ class ZmkHidDaemon:
     def __init__(
         self,
         layout_config: dict,
-        layers_config: list[dict],
+        keyboards_config: dict,
+        scripts_dir: Path,
         state_file: Path,
+        keyboard_override: str | None = None,
         read_layers: bool = True,
         sync_layout: bool = True,
     ) -> None:
         self.layouts: list[str] = layout_config.get("layouts", [])
         self.poll_interval_ms: int = layout_config.get("poll_interval_ms", 500)
         self.reconnect_delay_ms: int = layout_config.get("reconnect_delay_ms", 3000)
-        self.layers_config = layers_config
+        self.keyboards_config = keyboards_config
+        self.scripts_dir = scripts_dir
+        self.keyboard_override = keyboard_override
         self.state_file = state_file
         self.read_layers = read_layers
         self.sync_layout = sync_layout
+
+        self.active_keyboard = keyboard_override or keyboards_config.get("default", "")
+        self.layers_config = load_layers_for_keyboard(
+            keyboards_config,
+            self.active_keyboard,
+            scripts_dir,
+        )
 
         self.device: hid.Device | None = None
         self.device_lock = threading.Lock()
@@ -245,17 +323,34 @@ class ZmkHidDaemon:
             if self.device is not None:
                 return True
 
-            self.device = find_raw_hid_device()
-            if self.device is None:
+            found = find_raw_hid_device()
+            if found is None:
                 return False
+
+            self.device, device_info = found
 
             try:
                 self.device.nonblocking = True
             except AttributeError:
                 pass
 
-            manufacturer = self.device.manufacturer or "unknown"
-            product = self.device.product or "unknown"
+            keyboard_id = detect_keyboard(
+                device_info,
+                self.keyboards_config,
+                self.keyboard_override,
+            )
+            if keyboard_id != self.active_keyboard:
+                self.active_keyboard = keyboard_id
+                self.layers_config = load_layers_for_keyboard(
+                    self.keyboards_config,
+                    keyboard_id,
+                    self.scripts_dir,
+                )
+                self.last_layer_index = None
+                logging.info("Active keyboard profile: %s", keyboard_id)
+
+            manufacturer = self.device.manufacturer or device_info.get("manufacturer_string") or "unknown"
+            product = self.device.product or device_info.get("product_string") or "unknown"
             logging.info("Connected to Raw HID device: %s %s", manufacturer, product)
             return True
 
@@ -277,7 +372,7 @@ class ZmkHidDaemon:
                 continue
 
             try:
-                data = device.read(REPORT_SIZE, timeout_ms=500)
+                data = device.read(REPORT_SIZE, timeout=500)
             except OSError as error:
                 logging.error("Failed to read Raw HID report: %s", error)
                 self.close_device()
@@ -309,8 +404,18 @@ class ZmkHidDaemon:
         layer_label = layer_meta["label"] if layer_meta else f"L{layer_index}"
 
         self.last_layer_index = layer_index
-        write_layer_state(self.state_file, layer_index, self.layers_config)
-        logging.info("Layer update: %s (index %d)", layer_label, layer_index)
+        write_layer_state(
+            self.state_file,
+            layer_index,
+            self.layers_config,
+            self.active_keyboard,
+        )
+        logging.info(
+            "Layer update [%s]: %s (index %d)",
+            self.active_keyboard,
+            layer_label,
+            layer_index,
+        )
         trigger_sketchybar_update()
 
     def sync_current_layout(self) -> None:
@@ -371,6 +476,7 @@ class ZmkHidDaemon:
 
         logging.info("Watching input source changes. Mapped layouts: %s", self.layouts)
         logging.info("Current input source: %s", current_input_source_id())
+        logging.info("Active keyboard profile: %s", self.active_keyboard)
         logging.info("Layer state file: %s", self.state_file)
 
         self.start_reader()
@@ -404,10 +510,21 @@ def parse_args() -> argparse.Namespace:
         help="Path to layout_sync.json",
     )
     parser.add_argument(
+        "--keyboards-config",
+        type=Path,
+        default=DEFAULT_KEYBOARDS_CONFIG,
+        help="Path to keyboards.json",
+    )
+    parser.add_argument(
+        "--keyboard",
+        default=os.environ.get("ZMK_KEYBOARD"),
+        help="Force keyboard profile (e.g. op36_ruen, velvet_v3_ui_ruen)",
+    )
+    parser.add_argument(
         "--layers-config",
         type=Path,
         default=DEFAULT_LAYERS_CONFIG,
-        help="Path to layers.json",
+        help="Deprecated fallback layers.json path",
     )
     parser.add_argument(
         "--state-file",
@@ -447,16 +564,20 @@ def main() -> int:
     elif not args.layout_only:
         logging.warning("Layout config not found: %s", args.layout_config)
 
-    layers_config: list[dict] = []
-    if args.layers_config.exists():
-        layers_config = load_json_config(args.layers_config)
+    keyboards_config: dict = {"default": "velvet_v3_ui_ruen", "keyboards": {}}
+    if args.keyboards_config.exists():
+        keyboards_config = load_json_config(args.keyboards_config)
     elif not args.layout_only:
-        logging.warning("Layers config not found: %s", args.layers_config)
+        logging.warning("Keyboards config not found: %s", args.keyboards_config)
+
+    scripts_dir = args.keyboards_config.parent
 
     daemon = ZmkHidDaemon(
         layout_config=layout_config,
-        layers_config=layers_config,
+        keyboards_config=keyboards_config,
+        scripts_dir=scripts_dir,
         state_file=args.state_file,
+        keyboard_override=args.keyboard,
         read_layers=not args.layout_only,
         sync_layout=bool(layout_config.get("layouts")),
     )

@@ -11,6 +11,8 @@ from pathlib import Path
 
 DEFAULT_KEYMAP = Path(__file__).resolve().parents[1] / "config" / "velvet_v3_ui_ruen.keymap"
 DEFAULT_OUTPUT = Path(__file__).with_name("layers.json")
+DEFAULT_KEYBOARDS = Path(__file__).with_name("keyboards.json")
+CONFIG_DIR = Path(__file__).resolve().parents[1] / "config"
 
 LAYER_START_RE = re.compile(r"^        ([A-Za-z_][A-Za-z0-9_]*)\s*\{\s*$", re.MULTILINE)
 DISPLAY_NAME_RE = re.compile(r'display-name\s*=\s*"([^"]+)"')
@@ -80,6 +82,11 @@ def parse_keymap_layers(keymap_text: str) -> list[dict]:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
+        "--all",
+        action="store_true",
+        help="Regenerate layers files for all keyboards in keyboards.json",
+    )
+    parser.add_argument(
         "-k",
         "--keymap",
         type=Path,
@@ -98,6 +105,32 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
+
+    if args.all:
+        if not DEFAULT_KEYBOARDS.exists():
+            print(f"Keyboards config not found: {DEFAULT_KEYBOARDS}", file=sys.stderr)
+            return 1
+
+        keyboards = json.loads(DEFAULT_KEYBOARDS.read_text(encoding="utf-8"))
+        scripts_dir = DEFAULT_KEYBOARDS.parent
+
+        for keyboard_id, keyboard in keyboards.get("keyboards", {}).items():
+            keymap_name = keyboard.get("keymap")
+            layers_file = keyboard.get("layers_file")
+            if not keymap_name or not layers_file:
+                continue
+
+            keymap_path = CONFIG_DIR / keymap_name
+            output_path = scripts_dir / layers_file
+            if not keymap_path.exists():
+                print(f"Skipping {keyboard_id}: keymap not found at {keymap_path}", file=sys.stderr)
+                continue
+
+            layers = parse_keymap_layers(keymap_path.read_text(encoding="utf-8"))
+            output_path.write_text(json.dumps(layers, indent=2) + "\n", encoding="utf-8")
+            print(f"Wrote {len(layers)} layers to {output_path}")
+
+        return 0
 
     if not args.keymap.exists():
         print(f"Keymap not found: {args.keymap}", file=sys.stderr)

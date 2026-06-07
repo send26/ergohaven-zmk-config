@@ -17,5 +17,10 @@
   <string>/Users/senders/Library/Logs/zmk-layer-daemon.log</string>
   <key>StandardErrorPath</key>
   <string>/Users/senders/Library/Logs/zmk-layer-daemon.log</string>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+  </dict>
 </dict>
 </plist>
