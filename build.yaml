@@ -3,7 +3,7 @@ include:
   - board: ergohaven
     shield: velvet_v3_ui_left
   - board: ergohaven
-    shield: velvet_v3_ui_right
+    shield: velvet_v3_ui_right raw_hid_adapter
     keymap: velvet_v3_ui_ruen
     snippet: studio-rpc-usb-uart
     cmake-args: -DCONFIG_ZMK_STUDIO=y
@@ -18,7 +18,7 @@ include:
     cmake-args: -DCONFIG_ZMK_STUDIO=y
     artifact-name: velvet_v3_ui_qube-ergohaven-zmk
   - board: ergohaven
-    shield: velvet_v3_ui_qube qube dongle_screen
+    shield: velvet_v3_ui_qube qube dongle_screen raw_hid_adapter
     keymap: velvet_v3_ui_ruen
     snippet: studio-rpc-usb-uart
     cmake-args: -DCONFIG_ZMK_STUDIO=y
