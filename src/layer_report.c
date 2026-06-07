@@ -15,6 +15,7 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 static struct k_work_delayable layer_report_work;
 static uint8_t last_reported_layer = 0xFF;
 static uint8_t layer_report[CONFIG_RAW_HID_REPORT_SIZE];
+static bool layer_report_initialized;
 
 static void send_layer_report(struct k_work *work) {
     ARG_UNUSED(work);
@@ -39,6 +40,16 @@ static void send_layer_report(struct k_work *work) {
     });
 }
 
+static void ensure_layer_report_init(void) {
+    if (layer_report_initialized) {
+        return;
+    }
+
+    k_work_init_delayable(&layer_report_work, send_layer_report);
+    k_work_schedule(&layer_report_work, K_MSEC(1000));
+    layer_report_initialized = true;
+}
+
 static int layer_state_changed_listener(const zmk_event_t *eh) {
     struct zmk_layer_state_changed *event = as_zmk_layer_state_changed(eh);
 
@@ -46,17 +57,10 @@ static int layer_state_changed_listener(const zmk_event_t *eh) {
         return ZMK_EV_EVENT_BUBBLE;
     }
 
+    ensure_layer_report_init();
     k_work_reschedule(&layer_report_work, K_MSEC(CONFIG_ZMK_LAYER_REPORT_DEBOUNCE_MS));
     return ZMK_EV_EVENT_BUBBLE;
 }
-
-static int layer_report_init(void) {
-    k_work_init_delayable(&layer_report_work, send_layer_report);
-    k_work_schedule(&layer_report_work, K_MSEC(1000));
-    return 0;
-}
-
-SYS_INIT(layer_report_init, APPLICATION, CONFIG_APPLICATION_INIT_PRIORITY);
 
 ZMK_LISTENER(layer_report_listener, layer_state_changed_listener);
 ZMK_SUBSCRIPTION(layer_report_listener, zmk_layer_state_changed);
@@ -66,6 +70,8 @@ static int raw_hid_received_event_listener(const zmk_event_t *eh) {
     if (event == NULL || event->length < 2) {
         return ZMK_EV_EVENT_BUBBLE;
     }
+
+    ensure_layer_report_init();
 
     if (event->data[0] != HID_CMD_LAYOUT) {
         return ZMK_EV_EVENT_BUBBLE;
