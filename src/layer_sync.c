@@ -22,11 +22,11 @@ static int raw_hid_received_event_listener(const zmk_event_t *eh) {
         return ZMK_EV_EVENT_BUBBLE;
     }
 
-    if (zmk_keymap_layer_is_active(target)) {
+    if (zmk_keymap_layer_default() == target) {
         return ZMK_EV_EVENT_BUBBLE;
     }
 
-    zmk_keymap_layer_to(target, true);
+    zmk_keymap_layer_to(target);
     return ZMK_EV_EVENT_BUBBLE;
 }
 
