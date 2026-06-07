@@ -4,6 +4,8 @@
 from __future__ import annotations
 
 import argparse
+import ctypes
+import ctypes.util
 import json
 import logging
 import sys
@@ -27,6 +29,49 @@ INPUT_SOURCE_NOTIFICATIONS = (
 )
 
 
+def _load_tis_api_ctypes() -> dict:
+    carbon_path = ctypes.util.find_library("Carbon")
+    if carbon_path is None:
+        raise RuntimeError("Carbon framework not found")
+
+    carbon = ctypes.cdll.LoadLibrary(carbon_path)
+    objc_bridge = ctypes.PyDLL(objc._objc.__file__)
+    objc_bridge.PyObjCObject_New.restype = ctypes.py_object
+    objc_bridge.PyObjCObject_New.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int]
+
+    def objcify(ptr: int | None):
+        if not ptr:
+            return None
+        return objc_bridge.PyObjCObject_New(ptr, 0, 1)
+
+    carbon.TISCopyCurrentKeyboardInputSource.restype = ctypes.c_void_p
+    carbon.TISCopyCurrentKeyboardInputSource.argtypes = []
+
+    carbon.TISGetInputSourceProperty.restype = ctypes.c_void_p
+    carbon.TISGetInputSourceProperty.argtypes = [ctypes.c_void_p, ctypes.c_void_p]
+
+    input_source_id_key = ctypes.c_void_p.in_dll(carbon, "kTISPropertyInputSourceID")
+
+    def copy_current_keyboard_input_source():
+        return objcify(carbon.TISCopyCurrentKeyboardInputSource())
+
+    def get_input_source_property(source, _property_key):
+        if source is None:
+            return None
+        return objcify(
+            carbon.TISGetInputSourceProperty(
+                source.__c_void_p__(),
+                input_source_id_key,
+            )
+        )
+
+    return {
+        "TISCopyCurrentKeyboardInputSource": copy_current_keyboard_input_source,
+        "TISGetInputSourceProperty": get_input_source_property,
+        "kTISPropertyInputSourceID": input_source_id_key,
+    }
+
+
 def _load_tis_api() -> dict:
     try:
         from HIToolbox import (  # pyobjc-framework-ApplicationServices
@@ -41,27 +86,32 @@ def _load_tis_api() -> dict:
             "kTISPropertyInputSourceID": kTISPropertyInputSourceID,
         }
     except ImportError:
-        bundle = NSBundle.bundleWithIdentifier_("com.apple.HIToolbox")
-        if bundle is None:
-            raise RuntimeError("HIToolbox is not available on this system") from None
+        pass
 
+    bundle = NSBundle.bundleWithIdentifier_("com.apple.HIToolbox")
+    if bundle is not None:
         api: dict = {}
-        objc.loadBundleFunctions(
-            bundle,
-            api,
-            [
-                ("TISCopyCurrentKeyboardInputSource", "@"),
-                ("TISGetInputSourceProperty", "@@@"),
-            ],
-        )
-        objc.loadBundleVariables(
-            bundle,
-            api,
-            [
-                ("kTISPropertyInputSourceID", "@"),
-            ],
-        )
-        return api
+        try:
+            objc.loadBundleFunctions(
+                bundle,
+                api,
+                [
+                    ("TISCopyCurrentKeyboardInputSource", b"@"),
+                    ("TISGetInputSourceProperty", b"@@@"),
+                ],
+            )
+            objc.loadBundleVariables(
+                bundle,
+                api,
+                [
+                    ("kTISPropertyInputSourceID", b"@"),
+                ],
+            )
+            return api
+        except TypeError:
+            pass
+
+    return _load_tis_api_ctypes()
 
 
 _TIS = _load_tis_api()
