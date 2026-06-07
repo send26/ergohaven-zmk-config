@@ -1,4 +1,12 @@
-config OP36_LAYER_SYNC
-  bool "Enable en/ru layer sync over Raw HID"
-  depends on RAW_HID
-  default n
+config ZMK_LAYER_REPORT
+    bool "Send active layer to host via Raw HID"
+    depends on RAW_HID
+    default y
+
+if ZMK_LAYER_REPORT
+
+config ZMK_LAYER_REPORT_DEBOUNCE_MS
+    int "Debounce time for layer reports in ms"
+    default 30
+
+endif

@@ -1,0 +1,67 @@
+[
+  {
+    "index": 0,
+    "id": "en",
+    "label": "base"
+  },
+  {
+    "index": 1,
+    "id": "ru",
+    "label": "ru"
+  },
+  {
+    "index": 2,
+    "id": "sym_en",
+    "label": "sym_en"
+  },
+  {
+    "index": 3,
+    "id": "sym_ru",
+    "label": "sym_ru"
+  },
+  {
+    "index": 4,
+    "id": "nav",
+    "label": "nav"
+  },
+  {
+    "index": 5,
+    "id": "adj",
+    "label": "Adjust"
+  },
+  {
+    "index": 6,
+    "id": "mouse",
+    "label": "Mouse"
+  },
+  {
+    "index": 7,
+    "id": "scroll",
+    "label": "Scroll"
+  },
+  {
+    "index": 8,
+    "id": "sniper",
+    "label": "Sniper"
+  },
+  {
+    "index": 9,
+    "id": "mail",
+    "label": "mail"
+  },
+  {
+    "index": 10,
+    "id": "things",
+    "label": "things"
+  },
+  {
+    "index": 11,
+    "id": "obsidian",
+    "label": "obsidian"
+  },
+  {
+    "index": 12,
+    "id": "layer_12",
+    "label": "layer_12"
+  }
+]
