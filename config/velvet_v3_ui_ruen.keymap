@@ -103,6 +103,54 @@
             tapping-term-ms = <200>;
             flavor = "tap-preferred";
         };
+
+        b_ht: b_ht {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <1>;
+            bindings = <&maltk>, <&kp>;
+            tapping-term-ms = <300>;
+            flavor = "tap-preferred";
+        };
+
+        m_ht: m_ht {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <1>;
+            bindings = <&mtcop>, <&kp>;
+            tapping-term-ms = <300>;
+            flavor = "tap-preferred";
+        };
+
+        cma_ht: cma_ht {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <1>;
+            bindings = <&mhome>, <&kp>;
+            tapping-term-ms = <300>;
+            flavor = "tap-preferred";
+        };
+
+        t_ht: t_ht {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <1>;
+            bindings = <&mskit>, <&kp>;
+            tapping-term-ms = <400>;
+            flavor = "tap-preferred";
+        };
+
+        o_ht: o_ht {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <1>;
+            bindings = <&mmous>, <&kp>;
+            tapping-term-ms = <300>;
+            flavor = "tap-preferred";
+        };
+
+        w_syst_ht: w_syst_ht {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            bindings = <&tog>, <&kp>;
+            tapping-term-ms = <300>;
+            flavor = "tap-preferred";
+        };
     };
 
     combos {
@@ -225,6 +273,87 @@
 
             label = "CMDCLICK";
         };
+
+        maltk: maltk {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LS(LC(F18)) &kp LC(B) &kp L>;
+            label = "MALTK";
+            tap-ms = <30>;
+            wait-ms = <100>;
+        };
+
+        mtcop: mtcop {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LS(LC(F18)) &kp LA(LG(I))>;
+            label = "MTCOP";
+            tap-ms = <30>;
+            wait-ms = <100>;
+        };
+
+        mhome: mhome {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LS(LC(LA(LG(N6))))>;
+            label = "MHOME";
+            tap-ms = <30>;
+            wait-ms = <0>;
+        };
+
+        mskit: mskit {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LS(LA(LG(LC(F1))))>;
+            label = "MSKIT";
+            tap-ms = <30>;
+            wait-ms = <0>;
+        };
+
+        mmous: mmous {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LS(LC(LA(LG(Z))))>;
+            label = "MMOUS";
+            tap-ms = <30>;
+            wait-ms = <0>;
+        };
+
+        smute: smute {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LS(LA(LG(LC(O))))>;
+            label = "SMUTE";
+            tap-ms = <30>;
+            wait-ms = <0>;
+        };
+
+        stask: stask {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LS(LC(F18)) &kp LA(LG(A)) &kp T>;
+            label = "STASK";
+            tap-ms = <30>;
+            wait-ms = <100>;
+        };
+
+        scolor: scolor {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LS(LC(F18)) &kp LA(LG(A)) &kp C>;
+            label = "SCOLOR";
+            tap-ms = <30>;
+            wait-ms = <100>;
+        };
+
+        squak: squak {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LS(LC(F18)) &kp LA(LG(A)) &kp D>;
+            label = "SQUAK";
+            tap-ms = <30>;
+            wait-ms = <100>;
+        };
     };
 
     keymap {
@@ -232,9 +361,9 @@
 
         en {
             bindings = <
-&my_mt RET TAB  &lt 9 Q              &kp W               &lt 10 E           &lt 11 R         &kp T                                                        &kp Y            &my_mt LG(Z) U   &kp I               &kp O             &kp P                    &kp BSPC
-&lt 14 ESC      &hml LEFT_CONTROL A  &hml LEFT_ALT S     &hml LEFT_SHIFT D  &hml LEFT_GUI F  &kp G                                                        &kp H            &hmr LEFT_GUI J  &hmr RIGHT_SHIFT K  &hmr RIGHT_ALT L  &hmr RIGHT_CONTROL SEMI  &kp BSLH
-&none           &my_mt LG(TAB) Z     &my_mt LG(GRAVE) X  &kp C              &kp V            &kp B                                                        &kp N            &kp M            &kp COMMA           &kp DOT           &kp QUESTION             &none
+&my_mt RET TAB  &lt 9 Q              &w_syst_ht 15 W     &lt 10 E           &lt 11 R         &t_ht T                                                      &kp Y            &my_mt LG(Z) U   &kp I               &o_ht O           &kp P                    &kp BSPC
+&lt 14 ESC      &hml LEFT_CONTROL A  &hml LEFT_ALT S     &hml LEFT_SHIFT D  &hml LEFT_GUI F  &my_mt LC(Z) G                                              &kp H            &hmr LEFT_GUI J  &hmr RIGHT_SHIFT K  &hmr RIGHT_ALT L  &hmr RIGHT_CONTROL SEMI  &kp BSLH
+&none           &my_mt LG(TAB) Z     &my_mt LG(GRAVE) X  &my_mt LG(C) C     &my_mt LG(V) V  &b_ht B                                                        &my_mt LA(N) N   &m_ht M          &cma_ht COMMA     &kp DOT           &kp QUESTION             &none
                                      &kp LEFT_CONTROL    &kp LEFT_ALT       &lang_ru_ht      &lt 4 SPACE  &kp SPACE    &mt LG(LC(LA(LEFT_SHIFT))) RETURN  &bspc_subl 13 BACKSPACE  &none            &kp LBKT            &kp SLASH
             >;
 
@@ -244,9 +373,9 @@
         ru {
             display-name = "ru";
             bindings = <
-&my_mt RET TAB  &lt 9 RU_CYRILLIC_SHORT_I         &kp RU_CYRILLIC_TSE               &lt 10 RU_CYRILLIC_U            &lt 11 RU_CYRILLIC_KA        &kp RU_CYRILLIC_IE                                                  &kp RU_CYRILLIC_EN  &my_mt LG(Z) RU_CYRILLIC_GHE  &kp RU_CYRILLIC_SHA              &kp RU_CYRILLIC_SHCHA          &kp RU_CYRILLIC_ZE                  &kp BSPC
-&lt 14 ESC      &hml LEFT_CONTROL RU_CYRILLIC_EF  &hml LEFT_ALT RU_CYRILLIC_YERU    &hml LEFT_SHIFT RU_CYRILLIC_VE  &hml LEFT_GUI RU_CYRILLIC_A  &kp RU_CYRILLIC_PE                                                  &kp RU_CYRILLIC_ER  &hmr LEFT_GUI RU_CYRILLIC_O   &hmr RIGHT_SHIFT RU_CYRILLIC_EL  &hmr RIGHT_ALT RU_CYRILLIC_DE  &hmr RIGHT_CONTROL RU_CYRILLIC_ZHE  &kp BSLH
-&none           &my_mt LG(TAB) RU_CYRILLIC_YA     &my_mt LG(GRAVE) RU_CYRILLIC_CHE  &kp RU_CYRILLIC_ES              &kp RU_CYRILLIC_EM           &kp RU_CYRILLIC_I                                                   &kp RU_CYRILLIC_TE  &kp RU_CYRILLIC_SOFT_SIGN     &kp RU_CYRILLIC_BE               &kp RU_CYRILLIC_YU             &kp RU_CYRILLIC_E                   &none
+&my_mt RET TAB  &lt 9 RU_CYRILLIC_SHORT_I         &w_syst_ht 15 RU_CYRILLIC_TSE  &lt 10 RU_CYRILLIC_U  &lt 11 RU_CYRILLIC_KA  &t_ht RU_CYRILLIC_IE                                         &kp RU_CYRILLIC_EN  &my_mt LG(Z) RU_CYRILLIC_GHE  &kp RU_CYRILLIC_SHA  &o_ht RU_CYRILLIC_ZE  &kp RU_CYRILLIC_SHCHA  &kp BSPC
+&lt 14 ESC      &hml LEFT_CONTROL RU_CYRILLIC_EF  &hml LEFT_ALT RU_CYRILLIC_YERU    &hml LEFT_SHIFT RU_CYRILLIC_VE  &hml LEFT_GUI RU_CYRILLIC_A  &my_mt LC(Z) RU_CYRILLIC_PE                                 &kp RU_CYRILLIC_ER  &hmr LEFT_GUI RU_CYRILLIC_O   &hmr RIGHT_SHIFT RU_CYRILLIC_EL  &hmr RIGHT_ALT RU_CYRILLIC_DE  &hmr RIGHT_CONTROL RU_CYRILLIC_ZHE  &kp BSLH
+&none           &my_mt LG(TAB) RU_CYRILLIC_YA     &my_mt LG(GRAVE) RU_CYRILLIC_CHE  &my_mt LG(C) RU_CYRILLIC_ES  &my_mt LG(V) RU_CYRILLIC_EM  &b_ht RU_CYRILLIC_I                                                   &my_mt LA(N) RU_CYRILLIC_TE  &m_ht RU_CYRILLIC_SOFT_SIGN  &cma_ht RU_CYRILLIC_BE  &kp RU_CYRILLIC_YU  &kp RU_CYRILLIC_E  &none
                                                   &kp LEFT_CONTROL                  &kp LEFT_ALT                    &lang_en_ht                  &lt 4 SPACE         &kp SPACE    &mt LG(LC(LA(LEFT_SHIFT))) RETURN  &bspc_subl 13 BACKSPACE     &none                         &kp RU_CYRILLIC_HA               &kp RU_CYRILLIC_HARD_SIGN
             >;
         };
@@ -386,6 +515,16 @@
 &trans  &trans  &trans  &trans  &trans  &trans                    &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &trans  &trans  &trans  &trans  &trans                    &trans  &trans  &trans  &trans  &trans  &trans
                 &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans
+            >;
+        };
+
+        system {
+            display-name = "system";
+            bindings = <
+&smute  &trans  &kp C_VOL_UP  &trans  &stask  &kp C_PREV  &kp C_BRI_DEC  &kp C_BRI_INC  &kp C_NEXT  &kp C_PLAY_PAUSE  &trans  &trans
+&kp LG(W)  &kp LG(LC(Q))  &kp C_VOL_DN  &kp LG(MINUS)  &scolor  &kp LS(LG(LBKT))  &squak  &kp LS(LG(RBKT))  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &trans  &trans  &trans  &trans  &trans
+                                 &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
             >;
         };
     };
