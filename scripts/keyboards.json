@@ -1,0 +1,15 @@
+{
+  "default": "velvet_v3_ui_ruen",
+  "keyboards": {
+    "velvet_v3_ui_ruen": {
+      "layers_file": "layers_velvet_v3_ui_ruen.json",
+      "keymap": "velvet_v3_ui_ruen.keymap",
+      "match": ["velvet", "Velvet"]
+    },
+    "op36_ruen": {
+      "layers_file": "layers_op36_ruen.json",
+      "keymap": "op36_ruen.keymap",
+      "match": ["op36", "OP36", "OP-36"]
+    }
+  }
+}

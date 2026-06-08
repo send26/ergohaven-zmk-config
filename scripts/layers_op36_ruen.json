@@ -1,0 +1,52 @@
+[
+  {
+    "index": 0,
+    "id": "en",
+    "label": "Base"
+  },
+  {
+    "index": 1,
+    "id": "ru",
+    "label": "Ru"
+  },
+  {
+    "index": 2,
+    "id": "sym_en",
+    "label": "Symbols"
+  },
+  {
+    "index": 3,
+    "id": "sym_ru",
+    "label": "Symbols"
+  },
+  {
+    "index": 4,
+    "id": "nav",
+    "label": "Nav"
+  },
+  {
+    "index": 5,
+    "id": "adj",
+    "label": "Adjust"
+  },
+  {
+    "index": 6,
+    "id": "mouse",
+    "label": "mouse"
+  },
+  {
+    "index": 7,
+    "id": "mail",
+    "label": "mail"
+  },
+  {
+    "index": 8,
+    "id": "things",
+    "label": "things"
+  },
+  {
+    "index": 9,
+    "id": "obsidian",
+    "label": "obsidian"
+  }
+]

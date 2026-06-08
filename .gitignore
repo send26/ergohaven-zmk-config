@@ -1,0 +1,12 @@
+# Python venv (local scripts)
+lib/
+bin/
+include/
+pyvenv.cfg
+
+# ZMK local build cache
+.zmk-workspace/
+build/
+
+# macOS
+.DS_Store
