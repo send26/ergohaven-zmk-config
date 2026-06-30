@@ -1,5 +1,5 @@
 #include "keys_ru.h"
-#include "keys_ru.h"
+#include "ruen.dtsi"
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/keys.h>
@@ -108,62 +108,6 @@
         };
     };
 
-    macros {
-        to_ru: to_ru {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&kp LS(LC(N2))>;
-            label = "TO_RU";
-            wait-ms = <0>;
-            tap-ms = <30>;
-        };
-
-        to_en: to_en {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&kp LS(LC(N1))>;
-            label = "TO_EN";
-            wait-ms = <0>;
-            tap-ms = <30>;
-        };
-
-        layer_en: layer_en {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&to 0 &to_en>;
-            label = "LAYER_EN";
-            wait-ms = <0>;
-            tap-ms = <30>;
-        };
-
-        layer_ru: layer_ru {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&to 1 &to_ru>;
-            label = "LAYER_RU";
-            tap-ms = <30>;
-            wait-ms = <0>;
-        };
-
-        en: en {
-            compatible = "zmk,behavior-macro-one-param";
-            #binding-cells = <1>;
-            bindings =
-                <&to_en>,
-                <&macro_press>,
-                <&macro_param_1to1 &kp MACRO_PLACEHOLDER>,
-                <&macro_pause_for_release>,
-                <&macro_release>,
-                <&macro_param_1to1 &kp MACRO_PLACEHOLDER>,
-                <&macro_tap>,
-                <&to_ru>;
-
-            label = "EN";
-            wait-ms = <0>;
-            tap-ms = <30>;
-        };
-    };
-
     keymap {
         compatible = "zmk,keymap";
 
@@ -172,7 +116,7 @@
   &lt 7 Q              &kp W               &lt 8 E       &lt 9 R          &kp T                                                        &kp Y            &kp U            &kp I         &kp O        &td_p
   &hml LEFT_CONTROL A  &hml LALT S         &hml LSHFT D  &hml LEFT_GUI F  &hml GLOBE G                                                 &kp H            &hmr LEFT_GUI J  &hmr RSHFT K  &hmr LALT L  &hmr RIGHT_CONTROL SEMICOLON
   &my_mt LG(TAB) Z     &my_mt LG(GRAVE) X  &kp C         &kp V            &kp B                                                        &kp N            &kp M            &kp COMMA     &kp DOT      &kp QUESTION
-                                                         &kp TAB          &lt 4 SPACE   &lt 6 SPACE    &mt LS(LC(LG(LEFT_ALT))) ENTER  &lt 2 BACKSPACE  &kp TAB
+                                                         &layer_ru        &lt 4 SPACE   &lt 6 SPACE    &mt LS(LC(LG(LEFT_ALT))) ENTER  &lt 2 BACKSPACE  &kp TAB
             >;
 
             display-name = "Base";
@@ -183,7 +127,7 @@
   &lt 7 RU_CYRILLIC_SHORT_I         &kp RU_CYRILLIC_TSE               &lt 8 RU_CYRILLIC_U        &lt 9 RU_CYRILLIC_KA         &kp RU_CYRILLIC_IE                                                        &kp RU_CYRILLIC_EN  &kp RU_CYRILLIC_GHE          &kp RU_CYRILLIC_SHA        &kp RU_CYRILLIC_SHCHA     &td_ze
   &hml LEFT_CONTROL RU_CYRILLIC_EF  &hml LALT RU_CYRILLIC_YERU        &hml LSHFT RU_CYRILLIC_VE  &hml LEFT_GUI RU_CYRILLIC_A  &hml GLOBE RU_CYRILLIC_PE                                                 &kp RU_CYRILLIC_ER  &hmr LEFT_GUI RU_CYRILLIC_O  &hmr RSHFT RU_CYRILLIC_EL  &hmr LALT RU_CYRILLIC_DE  &hmr RIGHT_CONTROL RU_CYRILLIC_ZHE
   &my_mt LG(TAB) RU_CYRILLIC_YA     &my_mt LG(GRAVE) RU_CYRILLIC_CHE  &kp RU_CYRILLIC_ES         &kp RU_CYRILLIC_EM           &kp RU_CYRILLIC_I                                                         &kp RU_CYRILLIC_TE  &kp RU_CYRILLIC_SOFT_SIGN    &kp RU_CYRILLIC_BE         &kp RU_CYRILLIC_YU        &kp RU_CYRILLIC_E
-                                                                                                 &kp TAB                      &lt 4 SPACE                &lt 6 SPACE    &mt LS(LC(LG(LEFT_ALT))) ENTER  &lt 3 BACKSPACE     &kp TAB
+                                                                                                 &layer_en                    &lt 4 SPACE                &lt 6 SPACE    &mt LS(LC(LG(LEFT_ALT))) ENTER  &lt 3 BACKSPACE     &kp TAB
             >;
 
             display-name = "Ru";
@@ -193,7 +137,7 @@
             bindings = <
   &kp HASH                &kp LT          &kp EQUAL         &kp GT              &kp ASTERISK                    &kp CARET  &kp DQT             &kp GRAVE              &kp SQT         &sq_bracket
   &hml LEFT_CONTROL BSLH  &hml LALT LPAR  &hml LSHFT MINUS  &hml LEFT_GUI RPAR  &kp PLUS                        &kp PRCNT  &hmr LEFT_GUI LBRC  &hmr RSHFT UNDERSCORE  &hmr LALT RBRC  &hmr RIGHT_CONTROL EXCL
-  &kp AMPERSAND           &kp BACKSLASH   &kp COLON         &kp FSLH            &kp PIPE                        &kp AT     &kp DOLLAR          &kp COMMA              &kp DOT         &kp QMARK
+  &kp COMMA                &kp BACKSLASH   &kp COLON         &kp FSLH            &kp PIPE                        &kp AT     &kp DOLLAR          &kp COMMA              &kp DOT         &kp QMARK
                                                             &trans              &mo 5         &trans    &trans  &none      &kp TILDE
             >;
 
@@ -202,10 +146,10 @@
 
         sym_ru {
             bindings = <
-  &en HASH                        &en LT          &kp EQUAL         &en GT              &kp KP_MULTIPLY                    &en CARET  &kp DOUBLE_QUOTES  &en GRAVE           &kp LS(N2)  &sq_bracket
-  &hml LEFT_CONTROL RU_BACKSLASH  &hml LALT LPAR  &hml LSHFT MINUS  &hml LEFT_GUI RPAR  &kp KP_PLUS                        &kp PRCNT  &en LBRC           &hmr RSHFT RU_SEMI  &en RBRC    &hmr RIGHT_CONTROL EXCL
-  &en AMPERSAND                   &en BACKSLASH   &kp LS(NUMBER_5)  &en SLASH           &en PIPE                           &en AT     &en DOLLAR         &kp LS(RU_N6)       &kp LS(N7)  &kp LS(SLASH)
-                                                                    &trans              &mo 5            &trans    &trans  &none      &en TILDE
+  &kp HASH                &kp LT          &kp EQUAL         &kp GT              &kp ASTERISK                    &kp CARET  &kp DQT             &kp GRAVE              &kp SQT         &sq_bracket
+  &hml LEFT_CONTROL BSLH  &hml LALT LPAR  &hml LSHFT MINUS  &hml LEFT_GUI RPAR  &kp PLUS                        &kp PRCNT  &hmr LEFT_GUI LBRC  &hmr RSHFT UNDERSCORE  &hmr LALT RBRC  &hmr RIGHT_CONTROL EXCL
+  &kp COMMA                &kp BACKSLASH   &kp COLON         &kp FSLH            &kp PIPE                        &kp AT     &kp DOLLAR          &kp COMMA              &kp DOT         &kp QMARK
+                                                            &trans              &mo 5         &trans    &trans  &none      &kp TILDE
             >;
 
             display-name = "Symbols";

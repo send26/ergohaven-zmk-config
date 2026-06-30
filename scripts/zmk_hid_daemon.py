@@ -17,7 +17,7 @@ from pathlib import Path
 
 import hid
 import objc
-from AppKit import NSDate, NSDefaultRunLoopMode, NSRunLoop
+from AppKit import NSDate, NSDefaultRunLoopMode, NSRunLoop, NSWorkspace
 from Foundation import NSBundle, NSDistributedNotificationCenter, NSObject
 
 RAW_HID_USAGE_PAGE = 0xFF60
@@ -31,6 +31,11 @@ DEFAULT_KEYBOARDS_CONFIG = Path(__file__).with_name("keyboards.json")
 DEFAULT_LAYERS_CONFIG = Path(__file__).with_name("layers.json")
 DEFAULT_STATE_DIR = Path.home() / ".cache" / "zmk_layer"
 DEFAULT_STATE_FILE = DEFAULT_STATE_DIR / "state.json"
+DEFAULT_MACIME_PATH = "/usr/local/Cellar/macime/4.4.2/bin/macime"
+DEFAULT_MACIME_LAYOUTS = {
+    0: "com.apple.keylayout.ABC",
+    1: "com.apple.keylayout.Russian",
+}
 
 INPUT_SOURCE_NOTIFICATIONS = (
     "com.apple.inputmethodKit.IMKClient.currentInputSourceDidChange",
@@ -145,6 +150,36 @@ def current_input_source_id() -> str | None:
         return None
 
     return str(source_id)
+
+
+def frontmost_app_name() -> str | None:
+    app = NSWorkspace.sharedWorkspace().frontmostApplication()
+    if app is None:
+        return None
+    return str(app.localizedName())
+
+
+def should_pause_host_layout_sync(pause_apps: list[str]) -> bool:
+    if not pause_apps:
+        return False
+    frontmost = frontmost_app_name()
+    if frontmost is None:
+        return False
+    return frontmost in pause_apps
+
+
+def switch_mac_layout(macime_path: str, macime_layouts: dict[str, str], layer_index: int) -> None:
+    layout_id = macime_layouts.get(str(layer_index)) or macime_layouts.get(layer_index)
+    if layout_id is None:
+        return
+    if not Path(macime_path).exists():
+        logging.warning("macime not found: %s", macime_path)
+        return
+    try:
+        subprocess.run([macime_path, layout_id], check=False, capture_output=True, text=True)
+        logging.info("macime → %s (layer %d)", layout_id, layer_index)
+    except OSError as error:
+        logging.warning("macime failed: %s", error)
 
 
 def layout_index_for_source(source_id: str, layouts: list[str]) -> int | None:
@@ -292,6 +327,17 @@ class ZmkHidDaemon:
         self.state_file = state_file
         self.read_layers = read_layers
         self.sync_layout = sync_layout
+        self.pause_sync_when_frontmost: list[str] = layout_config.get(
+            "pause_sync_when_frontmost", []
+        )
+        self.macime_path: str = layout_config.get("macime_path", DEFAULT_MACIME_PATH)
+        raw_macime_layouts = layout_config.get("macime_layouts", DEFAULT_MACIME_LAYOUTS)
+        self.macime_layouts: dict[int | str, str] = {
+            int(key) if str(key).isdigit() else key: value
+            for key, value in raw_macime_layouts.items()
+        }
+        self.sym_layers: set[int] = set(layout_config.get("sym_layers", [2, 3]))
+        self.last_macime_layer: int | None = None
 
         self.active_keyboard = keyboard_override or keyboards_config.get("default", "")
         self.layers_config = load_layers_for_keyboard(
@@ -394,6 +440,7 @@ class ZmkHidDaemon:
             return
 
         layer_index = report[1]
+        previous_layer = self.last_layer_index
         if layer_index == self.last_layer_index:
             return
 
@@ -416,10 +463,41 @@ class ZmkHidDaemon:
             layer_label,
             layer_index,
         )
+        self._sync_macime_for_layer_change(previous_layer, layer_index)
         trigger_sketchybar_update()
+
+    def _sync_macime_for_layer_change(
+        self, previous_layer: int | None, layer_index: int
+    ) -> None:
+        target_macime_layer: int | None = None
+
+        if layer_index in self.sym_layers:
+            target_macime_layer = 0
+        elif layer_index in (0, 1):
+            target_macime_layer = layer_index
+        elif (
+            previous_layer in self.sym_layers
+            and layer_index == 1
+        ):
+            target_macime_layer = 1
+
+        if target_macime_layer is None:
+            return
+        if target_macime_layer == self.last_macime_layer:
+            return
+
+        switch_mac_layout(self.macime_path, self.macime_layouts, target_macime_layer)
+        self.last_macime_layer = target_macime_layer
 
     def sync_current_layout(self) -> None:
         if not self.sync_layout or not self.layouts:
+            return
+
+        if should_pause_host_layout_sync(self.pause_sync_when_frontmost):
+            logging.debug(
+                "Skipping Mac→keyboard sync while %s is frontmost",
+                frontmost_app_name(),
+            )
             return
 
         source_id = current_input_source_id()
