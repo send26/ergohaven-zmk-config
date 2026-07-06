@@ -9,6 +9,7 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
 #define HID_CMD_LAYER 0xAD
 #define HID_CMD_LAYOUT 0xAC
+#define LAYER_SYM 2
 #define LAYER_EN 0
 #define LAYER_RU 1
 
@@ -58,7 +59,11 @@ static int layer_state_changed_listener(const zmk_event_t *eh) {
     }
 
     ensure_layer_report_init();
-    k_work_reschedule(&layer_report_work, K_MSEC(CONFIG_ZMK_LAYER_REPORT_DEBOUNCE_MS));
+    if (zmk_keymap_highest_layer_active() == LAYER_SYM) {
+        k_work_reschedule(&layer_report_work, K_NO_WAIT);
+    } else {
+        k_work_reschedule(&layer_report_work, K_MSEC(CONFIG_ZMK_LAYER_REPORT_DEBOUNCE_MS));
+    }
     return ZMK_EV_EVENT_BUBBLE;
 }
 

@@ -2,8 +2,10 @@
 #include <dt-bindings/zmk/keys.h>
 
 /*
- * Shared RuEn macros: firmware layer + Ctrl+Shift for Windows VM.
- * Mac layout sync: zmk_hid_daemon + macime on Raw HID layer reports.
+ * Shared RuEn macros.
+ * layer_en/layer_ru: firmware layer only — Mac layout via zmk_hid_daemon (no Ctrl+Shift,
+ *   otherwise Russian layout leaks " on Shift+2).
+ * to_en/to_ru: sym `en` macro + Windows VM shortcuts; swallowed by zmk_mac_layout_daemon.
  */
 
 / {
@@ -29,7 +31,7 @@
         layer_en: layer_en {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&to 0 &to_en>;
+            bindings = <&to 0>;
             label = "LAYER_EN";
             wait-ms = <0>;
             tap-ms = <30>;
@@ -38,7 +40,7 @@
         layer_ru: layer_ru {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&to 1 &to_ru>;
+            bindings = <&to 1>;
             label = "LAYER_RU";
             tap-ms = <30>;
             wait-ms = <0>;

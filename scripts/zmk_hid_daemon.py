@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""ZMK Raw HID daemon: Mac layout sync + keyboard layer reporting for SketchyBar."""
+"""ZMK Raw HID daemon: keyboard layer reporting + Mac↔keyboard layout sync."""
 
 from __future__ import annotations
 
@@ -18,7 +18,9 @@ from pathlib import Path
 import hid
 import objc
 from AppKit import NSDate, NSDefaultRunLoopMode, NSRunLoop, NSWorkspace
-from Foundation import NSBundle, NSDistributedNotificationCenter, NSObject
+from Foundation import NSDistributedNotificationCenter, NSObject
+
+from zmk_tis import current_input_source_id, switch_macime_layout
 
 RAW_HID_USAGE_PAGE = 0xFF60
 RAW_HID_USAGE = 0x61
@@ -31,7 +33,7 @@ DEFAULT_KEYBOARDS_CONFIG = Path(__file__).with_name("keyboards.json")
 DEFAULT_LAYERS_CONFIG = Path(__file__).with_name("layers.json")
 DEFAULT_STATE_DIR = Path.home() / ".cache" / "zmk_layer"
 DEFAULT_STATE_FILE = DEFAULT_STATE_DIR / "state.json"
-DEFAULT_MACIME_PATH = "/usr/local/Cellar/macime/4.4.2/bin/macime"
+DEFAULT_MACIME_PATH = "/usr/local/bin/macime"
 DEFAULT_MACIME_LAYOUTS = {
     0: "com.apple.keylayout.ABC",
     1: "com.apple.keylayout.Russian",
@@ -43,113 +45,9 @@ INPUT_SOURCE_NOTIFICATIONS = (
 )
 
 
-def _load_tis_api_ctypes() -> dict:
-    import ctypes
-    import ctypes.util
-
-    carbon_path = ctypes.util.find_library("Carbon")
-    if carbon_path is None:
-        raise RuntimeError("Carbon framework not found")
-
-    carbon = ctypes.cdll.LoadLibrary(carbon_path)
-    objc_bridge = ctypes.PyDLL(objc._objc.__file__)
-    objc_bridge.PyObjCObject_New.restype = ctypes.py_object
-    objc_bridge.PyObjCObject_New.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int]
-
-    def objcify(ptr: int | None):
-        if not ptr:
-            return None
-        return objc_bridge.PyObjCObject_New(ptr, 0, 1)
-
-    carbon.TISCopyCurrentKeyboardInputSource.restype = ctypes.c_void_p
-    carbon.TISCopyCurrentKeyboardInputSource.argtypes = []
-
-    carbon.TISGetInputSourceProperty.restype = ctypes.c_void_p
-    carbon.TISGetInputSourceProperty.argtypes = [ctypes.c_void_p, ctypes.c_void_p]
-
-    input_source_id_key = ctypes.c_void_p.in_dll(carbon, "kTISPropertyInputSourceID")
-
-    def copy_current_keyboard_input_source():
-        return objcify(carbon.TISCopyCurrentKeyboardInputSource())
-
-    def get_input_source_property(source, _property_key):
-        if source is None:
-            return None
-        return objcify(
-            carbon.TISGetInputSourceProperty(
-                source.__c_void_p__(),
-                input_source_id_key,
-            )
-        )
-
-    return {
-        "TISCopyCurrentKeyboardInputSource": copy_current_keyboard_input_source,
-        "TISGetInputSourceProperty": get_input_source_property,
-        "kTISPropertyInputSourceID": input_source_id_key,
-    }
-
-
-def _load_tis_api() -> dict:
-    try:
-        from HIToolbox import (
-            TISCopyCurrentKeyboardInputSource,
-            TISGetInputSourceProperty,
-            kTISPropertyInputSourceID,
-        )
-
-        return {
-            "TISCopyCurrentKeyboardInputSource": TISCopyCurrentKeyboardInputSource,
-            "TISGetInputSourceProperty": TISGetInputSourceProperty,
-            "kTISPropertyInputSourceID": kTISPropertyInputSourceID,
-        }
-    except ImportError:
-        pass
-
-    bundle = NSBundle.bundleWithIdentifier_("com.apple.HIToolbox")
-    if bundle is not None:
-        api: dict = {}
-        try:
-            objc.loadBundleFunctions(
-                bundle,
-                api,
-                [
-                    ("TISCopyCurrentKeyboardInputSource", b"@"),
-                    ("TISGetInputSourceProperty", b"@@@"),
-                ],
-            )
-            objc.loadBundleVariables(
-                bundle,
-                api,
-                [("kTISPropertyInputSourceID", b"@")],
-            )
-            return api
-        except TypeError:
-            pass
-
-    return _load_tis_api_ctypes()
-
-
-_TIS = _load_tis_api()
-
-
 def load_json_config(path: Path) -> dict | list:
     with path.open(encoding="utf-8") as config_file:
         return json.load(config_file)
-
-
-def current_input_source_id() -> str | None:
-    source = _TIS["TISCopyCurrentKeyboardInputSource"]()
-    if source is None:
-        return None
-
-    source_id = _TIS["TISGetInputSourceProperty"](
-        source,
-        _TIS["kTISPropertyInputSourceID"],
-    )
-    if source_id is None:
-        return None
-
-    return str(source_id)
 
 
 def frontmost_app_name() -> str | None:
@@ -166,20 +64,6 @@ def should_pause_host_layout_sync(pause_apps: list[str]) -> bool:
     if frontmost is None:
         return False
     return frontmost in pause_apps
-
-
-def switch_mac_layout(macime_path: str, macime_layouts: dict[str, str], layer_index: int) -> None:
-    layout_id = macime_layouts.get(str(layer_index)) or macime_layouts.get(layer_index)
-    if layout_id is None:
-        return
-    if not Path(macime_path).exists():
-        logging.warning("macime not found: %s", macime_path)
-        return
-    try:
-        subprocess.run([macime_path, layout_id], check=False, capture_output=True, text=True)
-        logging.info("macime → %s (layer %d)", layout_id, layer_index)
-    except OSError as error:
-        logging.warning("macime failed: %s", error)
 
 
 def layout_index_for_source(source_id: str, layouts: list[str]) -> int | None:
@@ -337,7 +221,6 @@ class ZmkHidDaemon:
             for key, value in raw_macime_layouts.items()
         }
         self.sym_layers: set[int] = set(layout_config.get("sym_layers", [2, 3]))
-        self.last_macime_layer: int | None = None
 
         self.active_keyboard = keyboard_override or keyboards_config.get("default", "")
         self.layers_config = load_layers_for_keyboard(
@@ -354,6 +237,26 @@ class ZmkHidDaemon:
         self.last_source_id: str | None = None
         self.last_sent_index: int | None = None
         self.last_layer_index: int | None = None
+        self._suppress_mac_to_keyboard_until: float = 0.0
+
+    def _layout_id_for_layer(self, layer_index: int) -> str | None:
+        return self.macime_layouts.get(layer_index) or self.macime_layouts.get(
+            str(layer_index)
+        )
+
+    def _sync_mac_layout_for_layer(self, layer_index: int) -> None:
+        if layer_index in self.sym_layers:
+            return
+        layout_id = self._layout_id_for_layer(layer_index)
+        if layout_id is None:
+            return
+        if current_input_source_id() == layout_id:
+            logging.debug("Mac layout already %s for layer %d", layout_id, layer_index)
+            return
+        if switch_macime_layout(self.macime_path, layout_id):
+            self.last_source_id = layout_id
+            self._suppress_mac_to_keyboard_until = time.monotonic() + 1.5
+            logging.info("Keyboard layer %d → Mac %s", layer_index, layout_id)
 
     def close_device(self) -> None:
         with self.device_lock:
@@ -440,7 +343,6 @@ class ZmkHidDaemon:
             return
 
         layer_index = report[1]
-        previous_layer = self.last_layer_index
         if layer_index == self.last_layer_index:
             return
 
@@ -463,31 +365,9 @@ class ZmkHidDaemon:
             layer_label,
             layer_index,
         )
-        self._sync_macime_for_layer_change(previous_layer, layer_index)
+        if layer_index in (0, 1):
+            self._sync_mac_layout_for_layer(layer_index)
         trigger_sketchybar_update()
-
-    def _sync_macime_for_layer_change(
-        self, previous_layer: int | None, layer_index: int
-    ) -> None:
-        target_macime_layer: int | None = None
-
-        if layer_index in self.sym_layers:
-            target_macime_layer = 0
-        elif layer_index in (0, 1):
-            target_macime_layer = layer_index
-        elif (
-            previous_layer in self.sym_layers
-            and layer_index == 1
-        ):
-            target_macime_layer = 1
-
-        if target_macime_layer is None:
-            return
-        if target_macime_layer == self.last_macime_layer:
-            return
-
-        switch_mac_layout(self.macime_path, self.macime_layouts, target_macime_layer)
-        self.last_macime_layer = target_macime_layer
 
     def sync_current_layout(self) -> None:
         if not self.sync_layout or not self.layouts:
@@ -498,6 +378,26 @@ class ZmkHidDaemon:
                 "Skipping Mac→keyboard sync while %s is frontmost",
                 frontmost_app_name(),
             )
+            return
+
+        if (
+            self.last_layer_index is not None
+            and self.last_layer_index in self.sym_layers
+        ):
+            source_id = current_input_source_id()
+            if source_id and source_id != self.last_source_id:
+                logging.debug(
+                    "Skipping Mac→keyboard sync while on sym layer %d",
+                    self.last_layer_index,
+                )
+                self.last_source_id = source_id
+            return
+
+        if time.monotonic() < self._suppress_mac_to_keyboard_until:
+            source_id = current_input_source_id()
+            if source_id and source_id != self.last_source_id:
+                logging.debug("Skipping Mac→keyboard echo after keyboard layer switch")
+                self.last_source_id = source_id
             return
 
         source_id = current_input_source_id()

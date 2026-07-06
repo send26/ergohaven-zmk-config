@@ -6,7 +6,7 @@
   "poll_interval_ms": 500,
   "reconnect_delay_ms": 3000,
   "pause_sync_when_frontmost": ["Windows App"],
-  "macime_path": "/usr/local/Cellar/macime/4.4.2/bin/macime",
+  "macime_path": "/usr/local/bin/macime",
   "macime_layouts": {
     "0": "com.apple.keylayout.ABC",
     "1": "com.apple.keylayout.Russian"

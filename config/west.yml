@@ -4,6 +4,8 @@ manifest:
       url-base: https://github.com/ergohaven
     - name: zzeneg
       url-base: https://github.com/zzeneg
+    - name: urob
+      url-base: https://github.com/urob
   projects:
     - name: ergohaven-zmk
       remote: ergohaven
