@@ -140,7 +140,6 @@
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
             bindings = <&to 0>;
-
             label = "LAYER_EN";
             wait-ms = <0>;
             tap-ms = <30>;
@@ -241,10 +240,10 @@
 
         en {
             bindings = <
-&my_mt RET TAB  &lt 9 Q              &kp W               &lt 10 E           &lt 11 R         &kp T                                                        &kp Y            &my_mt LG(Z) U   &kp I               &kp O             &kp P                    &kp BSPC
-&lt 12 ESC      &hml LEFT_CONTROL A  &hml LEFT_ALT S     &hml LEFT_SHIFT D  &hml LEFT_GUI F  &kp G                                                        &kp H            &hmr LEFT_GUI J  &hmr RIGHT_SHIFT K  &hmr RIGHT_ALT L  &hmr RIGHT_CONTROL SEMI  &kp BSLH
-&none           &my_mt LG(TAB) Z     &my_mt LG(GRAVE) X  &kp C              &kp V            &kp B                                                        &kp N            &kp M            &kp COMMA           &kp DOT           &kp QUESTION             &none
-                                     &kp LEFT_CONTROL    &kp LEFT_ALT       &layer_ru        &lt 4 SPACE  &kp SPACE    &mt LG(LC(LA(LEFT_SHIFT))) RETURN  &lt 2 BACKSPACE  &none            &kp LBKT            &kp SLASH
+&my_mt RET TAB  &lt 9 Q              &kp W               &lt 10 E           &lt 11 R         &kp T                                     &kp Y  &my_mt LG(Z) U   &kp I               &kp O             &kp P                    &kp BSPC
+&lt 12 ESC      &hml LEFT_CONTROL A  &hml LEFT_ALT S     &hml LEFT_SHIFT D  &hml LEFT_GUI F  &kp G                                     &kp H  &hmr LEFT_GUI J  &hmr RIGHT_SHIFT K  &hmr RIGHT_ALT L  &hmr RIGHT_CONTROL SEMI  &hmr BSLH LC(LA(LS(LEFT_GUI)))
+&none           &my_mt LG(TAB) Z     &my_mt LG(GRAVE) X  &my_mt LG(C) C     &my_mt LG(V) V   &kp B                                     &kp N  &kp M            &kp COMMA           &kp DOT           &kp QUESTION             &none
+                                     &kp LEFT_CONTROL    &kp LEFT_ALT       &layer_ru        &lt 4 BACKSPACE  &kp SPACE    &kp RETURN  &mo 2  &none            &kp LBKT            &kp SLASH
             >;
 
             display-name = "base";
@@ -253,19 +252,19 @@
         ru {
             display-name = "ru";
             bindings = <
-&my_mt RET TAB  &lt 9 RU_CYRILLIC_SHORT_I         &kp RU_CYRILLIC_TSE               &lt 10 RU_CYRILLIC_U            &lt 11 RU_CYRILLIC_KA        &kp RU_CYRILLIC_IE                                                  &kp RU_CYRILLIC_EN  &my_mt LG(Z) RU_CYRILLIC_GHE  &kp RU_CYRILLIC_SHA              &kp RU_CYRILLIC_SHCHA          &kp RU_CYRILLIC_ZE                  &kp BSPC
-&lt 12 ESC      &hml LEFT_CONTROL RU_CYRILLIC_EF  &hml LEFT_ALT RU_CYRILLIC_YERU    &hml LEFT_SHIFT RU_CYRILLIC_VE  &hml LEFT_GUI RU_CYRILLIC_A  &kp RU_CYRILLIC_PE                                                  &kp RU_CYRILLIC_ER  &hmr LEFT_GUI RU_CYRILLIC_O   &hmr RIGHT_SHIFT RU_CYRILLIC_EL  &hmr RIGHT_ALT RU_CYRILLIC_DE  &hmr RIGHT_CONTROL RU_CYRILLIC_ZHE  &kp BSLH
-&none           &my_mt LG(TAB) RU_CYRILLIC_YA     &my_mt LG(GRAVE) RU_CYRILLIC_CHE  &kp RU_CYRILLIC_ES              &kp RU_CYRILLIC_EM           &kp RU_CYRILLIC_I                                                   &kp RU_CYRILLIC_TE  &kp RU_CYRILLIC_SOFT_SIGN     &kp RU_CYRILLIC_BE               &kp RU_CYRILLIC_YU             &kp RU_CYRILLIC_E                   &none
-                                                  &kp LEFT_CONTROL                  &kp LEFT_ALT                    &layer_en                    &lt 4 SPACE         &kp SPACE    &mt LG(LC(LA(LEFT_SHIFT))) RETURN  &lt 3 BACKSPACE     &none                         &kp RU_CYRILLIC_HA               &kp RU_CYRILLIC_HARD_SIGN
+&my_mt RET TAB  &lt 9 RU_CYRILLIC_SHORT_I         &kp RU_CYRILLIC_TSE               &lt 10 RU_CYRILLIC_U            &lt 11 RU_CYRILLIC_KA        &kp RU_CYRILLIC_IE                           &kp RU_CYRILLIC_EN  &my_mt LG(Z) RU_CYRILLIC_GHE  &kp RU_CYRILLIC_SHA              &kp RU_CYRILLIC_SHCHA          &kp RU_CYRILLIC_ZE                  &kp BSPC
+&lt 12 ESC      &hml LEFT_CONTROL RU_CYRILLIC_EF  &hml LEFT_ALT RU_CYRILLIC_YERU    &hml LEFT_SHIFT RU_CYRILLIC_VE  &hml LEFT_GUI RU_CYRILLIC_A  &kp RU_CYRILLIC_PE                           &kp RU_CYRILLIC_ER  &hmr LEFT_GUI RU_CYRILLIC_O   &hmr RIGHT_SHIFT RU_CYRILLIC_EL  &hmr RIGHT_ALT RU_CYRILLIC_DE  &hmr RIGHT_CONTROL RU_CYRILLIC_ZHE  &kp BSLH
+&none           &my_mt LG(TAB) RU_CYRILLIC_YA     &my_mt LG(GRAVE) RU_CYRILLIC_CHE  &my_mt LG(C) RU_CYRILLIC_ES     &my_mt LG(V) RU_CYRILLIC_EM  &kp RU_CYRILLIC_I                            &kp RU_CYRILLIC_TE  &kp RU_CYRILLIC_SOFT_SIGN     &kp RU_CYRILLIC_BE               &kp RU_CYRILLIC_YU             &kp RU_CYRILLIC_E                   &none
+                                                  &kp LEFT_CONTROL                  &kp LEFT_ALT                    &layer_en                    &lt 4 BACKSPACE     &kp SPACE    &kp RETURN  &mo 3               &none                         &kp RU_CYRILLIC_HA               &kp RU_CYRILLIC_HARD_SIGN
             >;
         };
 
         sym {
             bindings = <
-&trans  &kp HASH                 &kp LT              &kp EQUAL              &kp GT              &kp ASTERISK                    &kp CARET  &kp DQT                   &kp GRAVE               &kp SQT                     &kp LBKT                 &kp RBKT
-&trans  &hml LEFT_CONTROL ASTRK  &hml LEFT_ALT LPAR  &hml LEFT_SHIFT MINUS  &hml LEFT_GUI RPAR  &kp PLUS                        &kp PRCNT  &hmr LEFT_GUI LBRC        &hmr RIGHT_SHIFT UNDER  &hmr RIGHT_ALT RBRC         &hmr RIGHT_CONTROL SEMI  &kp BSLH
-&trans  &kp COMMA                &kp BSLH            &kp COLON              &kp FSLH            &kp PIPE                        &kp AT     &kp DOLLAR                &kp COMMA               &kp DOT                     &kp QMARK                &kp EXCL
-                                 &trans              &trans                 &trans              &mo 5         &trans    &trans  &trans     &trans                    &kp AMPS                &kp TILDE
+&trans  &kp HASH                 &kp LT              &kp EQUAL              &kp GT              &kp ASTERISK                    &kp CARET  &kp DQT             &kp GRAVE               &kp SQT              &kp LBKT                 &kp RBKT
+&trans  &hml LEFT_CONTROL ASTRK  &hml LEFT_ALT LPAR  &hml LEFT_SHIFT MINUS  &hml LEFT_GUI RPAR  &kp PLUS                        &kp PRCNT  &hmr LEFT_GUI LBRC  &hmr RIGHT_SHIFT UNDER  &hmr RIGHT_ALT RBRC  &hmr RIGHT_CONTROL SEMI  &kp BSLH
+&trans  &kp COMMA                &kp BSLH            &kp COLON              &kp FSLH            &kp PIPE                        &kp AT     &kp DOLLAR          &kp COMMA               &kp DOT              &kp QMARK                &kp EXCL
+                                 &trans              &trans                 &trans              &mo 5         &trans    &trans  &trans     &trans              &kp AMPS                &kp TILDE
             >;
 
             display-name = "sym";
@@ -274,19 +273,19 @@
         sym_ru {
             display-name = "sym_ru";
             bindings = <
-&kp RU_NUMERO       &en HASH                       &en LT         &kp EQUAL         &en GT     &en ASTRK                    &en CARET  &kp RU_DQT  &en GRAVE               &kp LS(N2)  &en LBKT           &en RBKT
-&kp RU_CYRILLIC_IO  &hml LEFT_CONTROL KP_MULTIPLY  &kp LPAR       &kp MINUS         &kp RPAR   &kp PLUS                     &kp PRCNT  &en LBRC    &hmr RIGHT_SHIFT UNDER  &en RBRC          &hmr RIGHT_CONTROL LS(N8)  &en BSLH
-&trans              &en GRAVE                      &en BSLH       &kp LS(N5)        &en FSLH  &en PIPE                     &en AT     &en DOLLAR  &kp LS(N6)              &kp LS(N7)        &kp LS(FSLH)               &kp EXCL
-                                                   &trans         &trans            &trans     &mo 5      &trans    &trans  &trans     &trans      &en AMPS                &en TILDE
+&kp RU_NUMERO       &en HASH                       &en LT    &kp EQUAL   &en GT    &en ASTRK                    &en CARET  &kp RU_DQT  &en GRAVE               &kp LS(N2)  &en LBKT                   &en RBKT
+&kp RU_CYRILLIC_IO  &hml LEFT_CONTROL KP_MULTIPLY  &kp LPAR  &kp MINUS   &kp RPAR  &kp PLUS                     &kp PRCNT  &en LBRC    &hmr RIGHT_SHIFT UNDER  &en RBRC    &hmr RIGHT_CONTROL LS(N8)  &en BSLH
+&trans              &en GRAVE                      &en BSLH  &kp LS(N5)  &en FSLH  &en PIPE                     &en AT     &en DOLLAR  &kp LS(N6)              &kp LS(N7)  &kp LS(FSLH)               &kp EXCL
+                                                   &trans    &trans      &trans    &mo 5      &trans    &trans  &trans     &trans      &en AMPS                &en TILDE
             >;
         };
 
-        nav {
+        digits {
             bindings = <
-&trans    &kp N1                    &kp N2        &kp N3          &kp N4                              &kp N5                     &kp N6          &kp N7                    &kp N8                     &kp N9                      &kp N0             &trans
-&kp CLCK  &hml LEFT_CONTROL ESCAPE  &kp LEFT_ALT  &kp LEFT_SHIFT  &hml LEFT_GUI LG(LC(LS(NUMBER_4)))  &kp RET                    &kp LEFT_ARROW  &hmr LEFT_GUI DOWN_ARROW  &hmr RIGHT_SHIFT UP_ARROW  &hmr RIGHT_ALT RIGHT_ARROW  &kp RIGHT_CONTROL  &trans
-&trans    &layer_en                 &kp LG(X)     &kp LG(C)       &kp LG(V)                           &kp DEL                    &kp CLCK        &kp LC(LEFT)              &kp PAGE_DOWN              &kp PAGE_UP                 &layer_ru          &trans
-                                    &trans        &trans          &trans                              &trans   &trans    &trans  &mo 5           &trans                    &trans                     &trans
+&trans      &kp LS(N1)                  &kp LS(N2)              &kp LS(N3)                &kp LS(N4)              &kp LS(N5)                      &kp LS(N6)  &kp LS(N7)        &kp LA(N8)                 &kp LS(N9)               &kp LS(N0)                   &trans
+&kp ESCAPE  &hml LEFT_CONTROL NUMBER_1  &hml LEFT_ALT NUMBER_2  &hml LEFT_SHIFT NUMBER_3  &hml LEFT_GUI NUMBER_4  &kp NUMBER_5                    &kp N6      &hmr LEFT_GUI N7  &hmr RIGHT_SHIFT NUMBER_8  &hmr RIGHT_ALT NUMBER_9  &hmr RIGHT_CONTROL NUMBER_0  &trans
+&trans      &layer_en                   &kp LG(X)               &kp LG(C)                 &kp LG(V)               &kp DEL                         &kp CLCK    &kp LC(LEFT)      &kp PAGE_DOWN              &kp PAGE_UP              &layer_ru                    &trans
+                                        &trans                  &trans                    &trans                  &trans        &trans    &trans  &mo 5       &trans            &trans                     &trans
             >;
 
             display-name = "nav";
@@ -369,12 +368,13 @@
             label = "obsidian";
         };
 
-        layer_12 {
+        nav {
+            display-name = "nav";
             bindings = <
-&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &trans  &trans  &trans  &trans  &trans
-                &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans
+&trans  &kp N1                    &kp N2        &kp N3          &kp N4                              &kp N5                     &kp LS(LA(LEFT_ARROW))  &kp LS(LA(DOWN_ARROW))    &kp LS(LA(UP))             &kp LS(LA(RIGHT_ARROW))     &kp N0             &trans
+&trans  &hml LEFT_CONTROL ESCAPE  &kp LEFT_ALT  &kp LEFT_SHIFT  &hml LEFT_GUI LG(LC(LS(NUMBER_4)))  &kp RET                    &kp LEFT_ARROW          &hmr LEFT_GUI DOWN_ARROW  &hmr RIGHT_SHIFT UP_ARROW  &hmr RIGHT_ALT RIGHT_ARROW  &kp RIGHT_CONTROL  &trans
+&trans  &layer_en                 &kp LG(X)     &kp LG(C)       &kp LG(V)                           &kp DEL                    &kp LA(LEFT_ARROW)      &kp LA(DOWN_ARROW)        &kp LA(UP_ARROW)           &kp RA(RIGHT_ARROW)         &layer_ru          &trans
+                                  &trans        &trans          &trans                              &trans   &trans    &trans  &mo 5                   &trans                    &trans                     &trans
             >;
         };
     };
