@@ -61,22 +61,7 @@
   },
   {
     "index": 12,
-    "id": "apps",
-    "label": "apps"
-  },
-  {
-    "index": 13,
-    "id": "sublayers",
-    "label": "sublayers"
-  },
-  {
-    "index": 14,
-    "id": "layer_14",
-    "label": "layer_14"
-  },
-  {
-    "index": 15,
-    "id": "system",
-    "label": "system"
+    "id": "layer_12",
+    "label": "layer_12"
   }
 ]
