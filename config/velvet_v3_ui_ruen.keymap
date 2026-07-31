@@ -292,10 +292,10 @@
 
         apps {
             bindings = <
-&bootloader  &kp F1   &kp F2   &kp F3   &kp F4   &kp F5                  &kp F6   &kp F7        &kp F8      &kp F9        &kp F10  &none
-&none        &kp F11  &kp F12  &kp F13  &kp F7   &kp F8                  &kp F16  &kp C_VOL_DN  &kp C_MUTE  &kp C_VOL_UP  &kp F20  &none
-&none        &kp F21  &kp F9   &kp F10  &kp F24  &kp F1                  &kp F2   &kp F3        &kp F4      &kp F5        &kp F6   &none
-                      &none    &none    &none    &none   &none    &none  &none    &none         &none       &none
+&bootloader  &kp LS(LC(F1))   &kp LS(LC(F2))   &kp LS(LC(F3))   &kp LS(LC(F4))   &kp LS(LC(F5))                    &kp LS(LC(F6))   &kp LS(LC(F7))   &kp LS(LC(F8))   &kp LS(LC(F9))   &kp LS(LC(F10))  &none
+&none        &kp LS(LC(F11))  &kp LS(LC(F12))  &kp LS(LC(F13))  &kp LS(LC(F14))  &kp LS(LC(F15))                   &kp LS(LC(F16))  &kp LS(LC(F17))  &kp LS(LC(F18))  &kp LS(LC(F19))  &kp LS(LC(F20))  &none
+&none        &kp LS(LC(F21))  &kp LS(LC(F22))  &kp LS(LC(F23))  &kp LS(LC(F24))  &kp LC(LA(F1))                    &kp LC(LA(F2))   &kp LC(LA(F3))   &kp LC(LA(F4))   &kp LC(LA(F5))   &kp LC(LA(F6))   &none
+                              &none            &none            &none            &none           &none    &none  &none            &none            &none            &none
             >;
 
             display-name = "apps";
