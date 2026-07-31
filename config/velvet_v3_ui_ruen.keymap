@@ -306,7 +306,7 @@
 &trans  &trans  &trans    &trans    &cmdclick  &trans                    &trans  &trans    &trans    &trans    &trans  &trans
 &trans  &mo 7   &mkp MB3  &mkp MB2  &mkp MB1   &mo 8                     &mo 8   &mkp MB1  &mkp MB2  &mkp MB3  &mo 7   &trans
 &trans  &trans  &trans    &trans    &trans     &trans                    &trans  &trans    &trans    &trans    &trans  &trans
-                &trans    &trans    &trans     &mo 4   &trans    &trans  &trans  &trans    &trans    &trans
+                &trans    &trans    &trans     &trans  &trans    &trans  &trans  &trans    &trans    &trans
             >;
 
             display-name = "Mouse";
@@ -317,7 +317,7 @@
 &trans  &trans  &trans    &trans    &trans    &trans                    &trans  &trans    &trans    &trans    &trans  &trans
 &trans  &trans  &mkp MB3  &mkp MB2  &mkp MB1  &trans                    &trans  &mkp MB1  &mkp MB2  &mkp MB3  &trans  &trans
 &trans  &trans  &trans    &trans    &trans    &trans                    &trans  &trans    &trans    &trans    &trans  &trans
-                &trans    &trans    &trans    &mo 4   &trans    &trans  &trans  &trans    &trans    &trans
+                &trans    &trans    &trans    &trans  &trans    &trans  &trans  &trans    &trans    &trans
             >;
 
             display-name = "Scroll";
@@ -328,7 +328,7 @@
 &trans  &trans  &trans    &trans    &trans    &trans                    &trans  &trans    &trans    &trans    &trans  &trans
 &trans  &trans  &mkp MB3  &mkp MB2  &mkp MB1  &trans                    &trans  &mkp MB1  &mkp MB2  &mkp MB3  &trans  &trans
 &trans  &trans  &trans    &trans    &trans    &trans                    &trans  &trans    &trans    &trans    &trans  &trans
-                &trans    &trans    &trans    &mo 4   &trans    &trans  &trans  &trans    &trans    &trans
+                &trans    &trans    &trans    &trans  &trans    &trans  &trans  &trans    &trans    &trans
             >;
 
             display-name = "Sniper";
@@ -370,10 +370,10 @@
         nav {
             display-name = "nav";
             bindings = <
-&trans  &kp N1                    &kp N2        &kp N3          &kp N4                              &kp N5                     &kp LS(LA(LEFT_ARROW))  &kp LS(LA(DOWN_ARROW))    &kp LS(LA(UP))             &kp LS(LA(RIGHT_ARROW))     &kp N0             &trans
-&trans  &hml LEFT_CONTROL ESCAPE  &kp LEFT_ALT  &kp LEFT_SHIFT  &hml LEFT_GUI LG(LC(LS(NUMBER_4)))  &kp RET                    &kp LEFT_ARROW          &hmr LEFT_GUI DOWN_ARROW  &hmr RIGHT_SHIFT UP_ARROW  &hmr RIGHT_ALT RIGHT_ARROW  &kp RIGHT_CONTROL  &trans
-&trans  &layer_en                 &kp LG(X)     &kp LG(C)       &kp LG(V)                           &kp DEL                    &kp LA(LEFT_ARROW)      &kp LA(DOWN_ARROW)        &kp LA(UP_ARROW)           &kp RA(RIGHT_ARROW)         &layer_ru          &trans
-                                  &trans        &trans          &trans                              &trans   &trans    &trans  &mo 5                   &trans                    &trans                     &trans
+&trans  &kp N1                    &kp LA(LC(LG(LS(W))))  &kp N3          &kp N4                              &kp N5                     &kp LS(LA(LEFT_ARROW))  &kp LS(LA(DOWN_ARROW))    &kp LS(LA(UP))             &kp LS(LA(RIGHT_ARROW))     &kp N0             &trans
+&trans  &hml LEFT_CONTROL ESCAPE  &kp LEFT_ALT           &kp LEFT_SHIFT  &hml LEFT_GUI LG(LC(LS(NUMBER_4)))  &kp RET                    &kp LEFT_ARROW          &hmr LEFT_GUI DOWN_ARROW  &hmr RIGHT_SHIFT UP_ARROW  &hmr RIGHT_ALT RIGHT_ARROW  &kp RIGHT_CONTROL  &trans
+&trans  &layer_en                 &kp LG(X)              &kp LG(C)       &kp LG(V)                           &kp DEL                    &kp LA(LEFT_ARROW)      &kp LA(DOWN_ARROW)        &kp LA(UP_ARROW)           &kp RA(RIGHT_ARROW)         &layer_ru          &trans
+                                  &trans                 &trans          &trans                              &trans   &trans    &trans  &mo 5                   &trans                    &trans                     &trans
             >;
         };
     };
