@@ -290,15 +290,15 @@
             display-name = "nav";
         };
 
-        adj {
+        apps {
             bindings = <
-&bootloader  &none  &kp F1  &kp F2   &kp F3   &kp F4                   &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2      &bt BT_SEL 3  &bt BT_SEL 4  &bt BT_CLR
-&none        &none  &kp F5  &kp F6   &kp F7   &kp F8                   &out OUT_BLE  &kp C_VOL_DN  &kp C_MUTE        &kp C_VOL_UP  &none         &studio_unlock
-&none        &none  &kp F9  &kp F10  &kp F11  &kp F12                  &out OUT_USB  &kp C_PREV    &kp C_PLAY_PAUSE  &kp C_NEXT    &none         &none
-                    &none   &none    &none    &none    &none    &none  &none         &none         &none             &none
+&bootloader  &kp F1   &kp F2   &kp F3   &kp F4   &kp F5                  &kp F6   &kp F7        &kp F8      &kp F9        &kp F10  &none
+&none        &kp F11  &kp F12  &kp F13  &kp F7   &kp F8                  &kp F16  &kp C_VOL_DN  &kp C_MUTE  &kp C_VOL_UP  &kp F20  &none
+&none        &kp F21  &kp F9   &kp F10  &kp F24  &kp F1                  &kp F2   &kp F3        &kp F4      &kp F5        &kp F6   &none
+                      &none    &none    &none    &none   &none    &none  &none    &none         &none       &none
             >;
 
-            display-name = "Adjust";
+            display-name = "apps";
         };
 
         mouse {
@@ -374,6 +374,16 @@
 &trans  &hml LEFT_CONTROL ESCAPE  &kp LEFT_ALT           &kp LEFT_SHIFT  &hml LEFT_GUI LG(LC(LS(NUMBER_4)))  &kp RET                    &kp LEFT_ARROW          &hmr LEFT_GUI DOWN_ARROW  &hmr RIGHT_SHIFT UP_ARROW  &hmr RIGHT_ALT RIGHT_ARROW  &kp RIGHT_CONTROL  &trans
 &trans  &layer_en                 &kp LG(X)              &kp LG(C)       &kp LG(V)                           &kp DEL                    &kp LA(LEFT_ARROW)      &kp LA(DOWN_ARROW)        &kp LA(UP_ARROW)           &kp RA(RIGHT_ARROW)         &layer_ru          &trans
                                   &trans                 &trans          &trans                              &trans   &trans    &trans  &mo 5                   &trans                    &trans                     &trans
+            >;
+        };
+
+        layer_13 {
+            display-name = "Adjust";
+            bindings = <
+&bootloader  &none  &kp F1  &kp F2   &kp F3   &kp F4                   &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2      &bt BT_SEL 3  &bt BT_SEL 4  &bt BT_CLR
+&none        &none  &kp F5  &kp F6   &kp F7   &kp F8                   &out OUT_BLE  &kp C_VOL_DN  &kp C_MUTE        &kp C_VOL_UP  &none         &studio_unlock
+&none        &none  &kp F9  &kp F10  &kp F11  &kp F12                  &out OUT_USB  &kp C_PREV    &kp C_PLAY_PAUSE  &kp C_NEXT    &none         &none
+                    &none   &none    &none    &none    &none    &none  &none         &none         &none             &none
             >;
         };
     };
