@@ -1,0 +1,9 @@
+/ {
+    behaviors {
+        host_layout: host_layout {
+            compatible = "zmk,behavior-host-layout";
+            #binding-cells = <1>;
+            display-name = "Host Layout";
+        };
+    };
+};

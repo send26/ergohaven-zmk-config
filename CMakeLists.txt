@@ -1,1 +1,1 @@
-target_sources_ifdef(CONFIG_ZMK_LAYER_REPORT app PRIVATE src/layer_report.c)
+target_sources_ifdef(CONFIG_ZMK_LAYER_REPORT app PRIVATE src/layer_report.c src/behavior_host_layout.c)

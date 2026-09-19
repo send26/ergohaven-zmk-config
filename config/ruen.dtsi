@@ -1,11 +1,12 @@
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/keys.h>
+#include "host_layout.dtsi"
 
 /*
  * Shared RuEn macros.
- * layer_en/layer_ru: firmware layer only — Mac layout via zmk_hid_daemon (no Ctrl+Shift,
- *   otherwise Russian layout leaks " on Shift+2).
- * to_en/to_ru: sym `en` macro + Windows VM shortcuts; swallowed by zmk_mac_layout_daemon.
+ * layer_en/layer_ru: firmware layer only — Mac layout via HID 0xAD.
+ * to_en/to_ru: HID 0xAE host layout for the sym `en` macro (no Ctrl+Shift+1/2,
+ *   otherwise Russian Shift+2 leaks ").
  */
 
 / {
@@ -13,7 +14,7 @@
         to_ru: to_ru {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&kp LS(LC(N2))>;
+            bindings = <&host_layout 1>;
             label = "TO_RU";
             wait-ms = <0>;
             tap-ms = <30>;
@@ -22,7 +23,7 @@
         to_en: to_en {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&kp LS(LC(N1))>;
+            bindings = <&host_layout 0>;
             label = "TO_EN";
             wait-ms = <0>;
             tap-ms = <30>;

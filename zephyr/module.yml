@@ -2,3 +2,5 @@ name: ergohaven-zmk-config
 build:
   cmake: .
   kconfig: Kconfig
+  settings:
+    dts_root: .
