@@ -5,8 +5,9 @@
 /*
  * Shared RuEn macros.
  * layer_en/layer_ru: firmware layer only — Mac layout via HID 0xAD.
- * to_en/to_ru: HID 0xAE host layout for the sym `en` macro (no Ctrl+Shift+1/2,
- *   otherwise Russian Shift+2 leaks ").
+ * to_en/to_ru: HID 0xAE host layout, wait for ACK 0xAF, then continue.
+ *   `en` taps the ABC scancode and `&to_ru` puts Mac back on Russian.
+ *   No Ctrl+Shift+1/2 (Russian Shift+2 leaks ").
  */
 
 / {

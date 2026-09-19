@@ -1,7 +1,7 @@
 # Copyright (c) 2026
 # SPDX-License-Identifier: MIT
 
-description: Ask the Mac host to select ABC (0) or Russian (1) via Raw HID 0xAE. No keycodes.
+description: Ask the Mac host to select ABC (0) or Russian (1) via Raw HID 0xAE, then wait for ACK 0xAF. No keycodes.
 
 compatible: "zmk,behavior-host-layout"
 
