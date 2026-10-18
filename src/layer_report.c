@@ -5,13 +5,10 @@
 #include <zmk/keymap.h>
 
 #include <zephyr/logging/log.h>
-LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
-#define HID_CMD_LAYER 0xAD
-#define HID_CMD_LAYOUT 0xAC
-#define LAYER_SYM 2
-#define LAYER_EN 0
-#define LAYER_RU 1
+#include "hid_cmd.h"
+
+LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
 static struct k_work_delayable layer_report_work;
 static uint8_t last_reported_layer = 0xFF;
@@ -19,26 +16,28 @@ static uint8_t layer_report[CONFIG_RAW_HID_REPORT_SIZE];
 static bool layer_report_initialized;
 
 static void send_layer_report(struct k_work *work) {
-    ARG_UNUSED(work);
-
     zmk_keymap_layer_index_t layer = zmk_keymap_highest_layer_active();
+    int rc;
 
+    ARG_UNUSED(work);
     if (layer == last_reported_layer) {
         return;
     }
-
-    last_reported_layer = layer;
 
     memset(layer_report, 0, sizeof(layer_report));
     layer_report[0] = HID_CMD_LAYER;
     layer_report[1] = (uint8_t)layer;
 
-    LOG_INF("Sending layer report: %u", layer);
-
-    raise_raw_hid_sent_event((struct raw_hid_sent_event){
+    rc = raise_raw_hid_sent_event((struct raw_hid_sent_event){
         .data = layer_report,
         .length = CONFIG_RAW_HID_REPORT_SIZE,
     });
+    if (rc != 0) {
+        LOG_WRN("layer report send failed: %d", rc);
+        return;
+    }
+    last_reported_layer = layer;
+    LOG_INF("Sending layer report: %u", layer);
 }
 
 static void ensure_layer_report_init(void) {
@@ -71,18 +70,23 @@ ZMK_LISTENER(layer_report_listener, layer_state_changed_listener);
 ZMK_SUBSCRIPTION(layer_report_listener, zmk_layer_state_changed);
 
 static int raw_hid_received_event_listener(const zmk_event_t *eh) {
-    struct raw_hid_received_event *event = as_raw_hid_received_event(eh);
-    if (event == NULL || event->length < 2) {
+    const struct raw_hid_received_event *event = as_raw_hid_received_event(eh);
+    int at;
+    uint8_t target;
+    int rc;
+
+    if (event == NULL || event->data == NULL) {
         return ZMK_EV_EVENT_BUBBLE;
     }
 
     ensure_layer_report_init();
 
-    if (event->data[0] != HID_CMD_LAYOUT) {
+    at = hid_frame_at(event->data, event->length, HID_CMD_LAYOUT, 1);
+    if (at < 0) {
         return ZMK_EV_EVENT_BUBBLE;
     }
 
-    uint8_t target = event->data[1];
+    target = event->data[at + 1];
     if (target != LAYER_EN && target != LAYER_RU) {
         return ZMK_EV_EVENT_BUBBLE;
     }
@@ -91,7 +95,10 @@ static int raw_hid_received_event_listener(const zmk_event_t *eh) {
         return ZMK_EV_EVENT_BUBBLE;
     }
 
-    zmk_keymap_layer_to(target);
+    rc = zmk_keymap_layer_to(target);
+    if (rc != 0) {
+        LOG_WRN("layer sync failed for %u: %d", target, rc);
+    }
     return ZMK_EV_EVENT_BUBBLE;
 }
 

@@ -1,0 +1,9 @@
+/ {
+    behaviors {
+        sym: sym {
+            compatible = "zmk,behavior-sym-glyph";
+            #binding-cells = <1>;
+            display-name = "Symbol";
+        };
+    };
+};

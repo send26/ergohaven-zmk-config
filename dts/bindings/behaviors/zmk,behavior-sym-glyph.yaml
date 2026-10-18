@@ -1,0 +1,11 @@
+# Copyright (c) 2026
+# SPDX-License-Identifier: MIT
+
+description: |
+  One symbol glyph. Horizon (Raw HID 0xB0) sends left Alt plus numpad digits.
+  Mac Russian asks the host for one Unicode character (0xB1 / ACK 0xB2).
+  Mac English sends the US scancode.
+
+compatible: "zmk,behavior-sym-glyph"
+
+include: one_param.yaml

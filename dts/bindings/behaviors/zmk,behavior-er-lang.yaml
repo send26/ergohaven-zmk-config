@@ -1,0 +1,10 @@
+# Copyright (c) 2026
+# SPDX-License-Identifier: MIT
+
+description: |
+  E+R language chord. In Horizon, hold left Alt and left Shift together.
+  Otherwise toggle the firmware English/Russian layer.
+
+compatible: "zmk,behavior-er-lang"
+
+include: zero_param.yaml

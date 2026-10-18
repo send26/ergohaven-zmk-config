@@ -1,5 +1,7 @@
 #include "keys_ru.h"
 #include "host_layout.dtsi"
+#include "sym_glyph.h"
+#include "sym_glyph.dtsi"
 #include <dt-bindings/zmk/input_transform.h>
 #include <input/processors.dtsi>
 #include <zephyr/dt-bindings/input/input-event-codes.h>
@@ -64,6 +66,25 @@
             quick-tap-ms = <300>;
         };
 
+        /* Symbol-layer home row: hold is still a modifier, tap is &sym. */
+        hml_sym: home_row_mod_left_sym {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            bindings = <&kp>, <&sym>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <300>;
+            quick-tap-ms = <300>;
+        };
+
+        hmr_sym: home_row_mod_right_sym {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            bindings = <&kp>, <&sym>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <300>;
+            quick-tap-ms = <300>;
+        };
+
         my_mt: my_mt {
             compatible = "zmk,behavior-hold-tap";
             bindings = <&kp>, <&kp>;
@@ -107,21 +128,22 @@
             require-prior-idle-ms = <800>;
             excluded-positions = <>;
         };
+
+        /* E+R. Horizon: Alt+Shift for Windows. Otherwise toggle en/ru. */
+        er_lang: er_lang {
+            compatible = "zmk,behavior-er-lang";
+            #binding-cells = <0>;
+            display-name = "ER Lang";
+        };
     };
 
     combos {
         compatible = "zmk,combos";
 
-        cmben {
-            bindings = <&layer_en>;
+        er {
+            bindings = <&er_lang>;
             key-positions = <3 4>;
-            layers = <1>;
-        };
-
-        cmbru {
-            bindings = <&layer_ru>;
-            key-positions = <3 4>;
-            layers = <0>;
+            layers = <0 1>;
         };
 
         kha {
@@ -204,10 +226,10 @@
             bindings =
                 <&to_en>,
                 <&macro_press>,
-                <&macro_param_1to1 &kp MACRO_PLACEHOLDER>,
+                <&macro_param_1to1 &host_key MACRO_PLACEHOLDER>,
                 <&macro_pause_for_release>,
                 <&macro_release>,
-                <&macro_param_1to1 &kp MACRO_PLACEHOLDER>,
+                <&macro_param_1to1 &host_key MACRO_PLACEHOLDER>,
                 <&to_ru>;
 
             label = "EN";
@@ -247,10 +269,10 @@
             bindings =
                 <&to_en>,
                 <&macro_press>,
-                <&macro_param_1to1 &kp MACRO_PLACEHOLDER>,
+                <&macro_param_1to1 &host_key MACRO_PLACEHOLDER>,
                 <&macro_pause_for_release>,
                 <&macro_release>,
-                <&macro_param_1to1 &kp MACRO_PLACEHOLDER>,
+                <&macro_param_1to1 &host_key MACRO_PLACEHOLDER>,
                 <&to_ru>;
 
             label = "EN_1";
@@ -312,12 +334,17 @@
             >;
         };
 
+        /*
+         * Same glyphs on Mac and in Horizon.
+         * English base: one US scancode. Russian base: host unicode (0xB1).
+         * Horizon focused (0xB0): Alt+numpad. № and ё are on sym_ru only.
+         */
         sym {
             bindings = <
-&trans  &kp HASH                 &kp LT              &kp EQUAL              &kp GT              &kp ASTERISK                    &kp CARET  &kp DQT             &kp GRAVE               &kp SQT              &kp LBKT                 &kp RBKT
-&trans  &hml LEFT_CONTROL ASTRK  &hml LEFT_ALT LPAR  &hml LEFT_SHIFT MINUS  &hml LEFT_GUI RPAR  &kp PLUS                        &kp PRCNT  &hmr LEFT_GUI LBRC  &hmr RIGHT_SHIFT UNDER  &hmr RIGHT_ALT RBRC  &hmr RIGHT_CONTROL SEMI  &kp BSLH
-&trans  &kp COMMA                &kp BSLH            &kp COLON              &kp FSLH            &kp PIPE                        &kp AT     &kp DOLLAR          &kp COMMA               &kp DOT              &kp QMARK                &kp EXCL
-                                 &trans              &trans                 &trans              &mo 5         &trans    &trans  &trans     &trans              &kp AMPS                &kp TILDE
+&trans  &sym SYM_HASH                    &sym SYM_LT              &sym SYM_EQUAL              &sym SYM_GT              &sym SYM_ASTRK                       &sym SYM_CARET  &sym SYM_DQT             &sym SYM_GRAVE               &sym SYM_SQT              &sym SYM_LBKT                 &sym SYM_RBKT
+&trans  &hml_sym LEFT_CONTROL SYM_ASTRK  &hml_sym LEFT_ALT SYM_LPAR  &hml_sym LEFT_SHIFT SYM_MINUS  &hml_sym LEFT_GUI SYM_RPAR  &sym SYM_PLUS                     &sym SYM_PRCNT  &hmr_sym LEFT_GUI SYM_LBRC  &hmr_sym RIGHT_SHIFT SYM_UNDER  &hmr_sym RIGHT_ALT SYM_RBRC  &hmr_sym RIGHT_CONTROL SYM_SEMI  &sym SYM_BSLH
+&trans  &sym SYM_COMMA                   &sym SYM_BSLH            &sym SYM_COLON              &sym SYM_FSLH            &sym SYM_PIPE                        &sym SYM_AT     &sym SYM_DOLLAR          &sym SYM_COMMA               &sym SYM_DOT              &sym SYM_QMARK                &sym SYM_EXCL
+                                        &trans                   &trans                      &trans                   &trans        &trans    &trans  &mo 5      &trans                   &sym SYM_AMPS             &sym SYM_TILDE
             >;
 
             display-name = "sym";
@@ -326,10 +353,10 @@
         sym_ru {
             display-name = "sym_ru";
             bindings = <
-&kp RU_NUMERO       &en HASH                       &en LT    &kp EQUAL   &en GT    &en ASTRK                    &en CARET  &kp RU_DQT  &en GRAVE               &kp LS(N2)  &en LBKT                   &en RBKT
-&kp RU_CYRILLIC_IO  &hml LEFT_CONTROL KP_MULTIPLY  &kp LPAR  &kp MINUS   &kp RPAR  &kp PLUS                     &kp PRCNT  &en LBRC    &hmr RIGHT_SHIFT UNDER  &en RBRC    &hmr RIGHT_CONTROL LS(N8)  &en BSLH
-&trans              &en GRAVE                      &en BSLH  &kp LS(N5)  &en FSLH  &en PIPE                     &en AT     &en DOLLAR  &kp LS(N6)              &kp LS(N7)  &kp LS(FSLH)               &kp EXCL
-                                                   &trans    &trans      &trans    &mo 5      &trans    &trans  &trans     &trans      &en AMPS                &en TILDE
+&sym SYM_NUMERO  &sym SYM_HASH                    &sym SYM_LT              &sym SYM_EQUAL              &sym SYM_GT              &sym SYM_ASTRK                       &sym SYM_CARET  &sym SYM_DQT             &sym SYM_GRAVE               &sym SYM_SQT              &sym SYM_LBKT                 &sym SYM_RBKT
+&sym SYM_IO      &hml_sym LEFT_CONTROL SYM_ASTRK  &hml_sym LEFT_ALT SYM_LPAR  &hml_sym LEFT_SHIFT SYM_MINUS  &hml_sym LEFT_GUI SYM_RPAR  &sym SYM_PLUS                     &sym SYM_PRCNT  &hmr_sym LEFT_GUI SYM_LBRC  &hmr_sym RIGHT_SHIFT SYM_UNDER  &hmr_sym RIGHT_ALT SYM_RBRC  &hmr_sym RIGHT_CONTROL SYM_SEMI  &sym SYM_BSLH
+&trans           &sym SYM_COMMA                   &sym SYM_BSLH            &sym SYM_COLON              &sym SYM_FSLH            &sym SYM_PIPE                        &sym SYM_AT     &sym SYM_DOLLAR          &sym SYM_COMMA               &sym SYM_DOT              &sym SYM_QMARK                &sym SYM_EXCL
+                                                 &trans                   &trans                      &trans                   &trans        &trans    &trans  &mo 5      &trans                   &sym SYM_AMPS             &sym SYM_TILDE
             >;
         };
 
@@ -338,7 +365,7 @@
 &trans      &kp LS(N1)                  &kp LS(N2)              &kp LS(N3)                &kp LS(N4)              &kp LS(N5)                      &kp LS(N6)  &kp LS(N7)        &kp LA(N8)                 &kp LS(N9)               &kp LS(N0)                   &trans
 &kp ESCAPE  &hml LEFT_CONTROL NUMBER_1  &hml LEFT_ALT NUMBER_2  &hml LEFT_SHIFT NUMBER_3  &hml LEFT_GUI NUMBER_4  &kp NUMBER_5                    &kp N6      &hmr LEFT_GUI N7  &hmr RIGHT_SHIFT NUMBER_8  &hmr RIGHT_ALT NUMBER_9  &hmr RIGHT_CONTROL NUMBER_0  &trans
 &trans      &layer_en                   &kp LG(X)               &kp LG(C)                 &kp LG(V)               &kp DEL                         &kp CLCK    &kp LC(LEFT)      &kp PAGE_DOWN              &kp PAGE_UP              &layer_ru                    &trans
-                                        &trans                  &trans                    &trans                  &trans        &trans    &trans  &mo 5       &trans            &trans                     &trans
+                                        &trans                  &trans                    &trans                  &mo 5         &trans    &trans  &trans      &trans            &trans                     &trans
             >;
 
             display-name = "nav";

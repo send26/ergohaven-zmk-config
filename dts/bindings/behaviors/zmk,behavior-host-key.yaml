@@ -1,0 +1,8 @@
+# Copyright (c) 2026
+# SPDX-License-Identifier: MIT
+
+description: US scancode used by the en macro. Sends nothing when the preceding host layout ACK timed out.
+
+compatible: "zmk,behavior-host-key"
+
+include: one_param.yaml

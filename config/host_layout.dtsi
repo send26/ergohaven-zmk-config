@@ -5,5 +5,10 @@
             #binding-cells = <1>;
             display-name = "Host Layout";
         };
+        host_key: host_key {
+            compatible = "zmk,behavior-host-key";
+            #binding-cells = <1>;
+            display-name = "Host Key";
+        };
     };
 };
