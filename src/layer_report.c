@@ -18,6 +18,7 @@ static bool layer_report_initialized;
 static void send_layer_report(struct k_work *work) {
     zmk_keymap_layer_index_t layer = zmk_keymap_highest_layer_active();
     int rc;
+    int delivered;
 
     ARG_UNUSED(work);
     if (layer == last_reported_layer) {
@@ -28,12 +29,17 @@ static void send_layer_report(struct k_work *work) {
     layer_report[0] = HID_CMD_LAYER;
     layer_report[1] = (uint8_t)layer;
 
+    delivered = -ENOTCONN;
     rc = raise_raw_hid_sent_event((struct raw_hid_sent_event){
         .data = layer_report,
         .length = CONFIG_RAW_HID_REPORT_SIZE,
+        .status = &delivered,
     });
-    if (rc != 0) {
-        LOG_WRN("layer report send failed: %d", rc);
+    if (rc != 0 || delivered != 0) {
+        LOG_WRN("layer report was not delivered: %d", rc != 0 ? rc : delivered);
+        if (delivered != -ENOTCONN) {
+            k_work_reschedule(&layer_report_work, K_MSEC(CONFIG_ZMK_LAYER_REPORT_DEBOUNCE_MS));
+        }
         return;
     }
     last_reported_layer = layer;

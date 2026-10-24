@@ -1,0 +1,224 @@
+diff --git a/app/include/zmk/hog.h b/app/include/zmk/hog.h
+index 0b79decb..86089e93 100644
+--- a/app/include/zmk/hog.h
++++ b/app/include/zmk/hog.h
+@@ -6,6 +6,9 @@
+ 
+ #pragma once
+ 
++#include <stddef.h>
++#include <stdint.h>
++
+ #include <zmk/keys.h>
+ #include <zmk/hid.h>
+ 
+@@ -15,3 +18,14 @@ int zmk_hog_send_consumer_report(struct zmk_hid_consumer_report_body *body);
+ #if IS_ENABLED(CONFIG_ZMK_POINTING)
+ int zmk_hog_send_mouse_report(struct zmk_hid_mouse_report_body *body);
+ #endif // IS_ENABLED(CONFIG_ZMK_POINTING)
++
++#if IS_ENABLED(CONFIG_RAW_HID)
++/* Free beside keyboard/LED 0x01, consumer 0x02, mouse 0x03. */
++#define ZMK_HID_REPORT_ID_RAW 0x04
++
++typedef int (*zmk_hog_raw_recv_fn)(const uint8_t *data, uint8_t len);
++
++/* desc is borrowed and must outlive the connection. Called once at init. */
++int zmk_hog_raw_register(const uint8_t *desc, size_t desc_len, zmk_hog_raw_recv_fn recv);
++int zmk_hog_send_raw_report(const uint8_t *data, uint8_t len);
++#endif // IS_ENABLED(CONFIG_RAW_HID)
+diff --git a/app/src/hog.c b/app/src/hog.c
+index c7d9b861..6c3e02fc 100644
+--- a/app/src/hog.c
++++ b/app/src/hog.c
+@@ -24,6 +24,9 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
+ #if IS_ENABLED(CONFIG_ZMK_HID_INDICATORS)
+ #include <zmk/hid_indicators.h>
+ #endif // IS_ENABLED(CONFIG_ZMK_HID_INDICATORS)
++#if IS_ENABLED(CONFIG_RAW_HID)
++#include <string.h>
++#endif // IS_ENABLED(CONFIG_RAW_HID)
+ 
+ enum {
+     HIDS_REMOTE_WAKE = BIT(0),
+@@ -90,6 +93,55 @@ static struct hids_report mouse_feature = {
+ 
+ #endif // IS_ENABLED(CONFIG_ZMK_POINTING)
+ 
++#if IS_ENABLED(CONFIG_RAW_HID)
++
++static struct hids_report raw_hid_input = {
++    .id = ZMK_HID_REPORT_ID_RAW,
++    .type = HIDS_INPUT,
++};
++
++static struct hids_report raw_hid_output = {
++    .id = ZMK_HID_REPORT_ID_RAW,
++    .type = HIDS_OUTPUT,
++};
++
++#define ZMK_HOG_RAW_DESC_MAX 64
++
++static zmk_hog_raw_recv_fn raw_hid_recv;
++static uint8_t raw_hid_map[sizeof(zmk_hid_report_desc) + ZMK_HOG_RAW_DESC_MAX];
++static size_t raw_hid_map_len;
++static const struct bt_gatt_attr *raw_hid_notify_attr;
++
++/* Attribute counts match the service body below. Value is the second attribute
++ * of the raw input characteristic; the report reference is two past that.
++ */
++#define HOG_ATTR_SVC 1
++#define HOG_ATTR_CHRC 2
++#define HOG_ATTR_CHRC_CCC_REF (HOG_ATTR_CHRC + 2)
++#define HOG_ATTR_CHRC_REF (HOG_ATTR_CHRC + 1)
++#define HOG_ATTRS_BEFORE_RAW                                                                       \
++    (HOG_ATTR_SVC + HOG_ATTR_CHRC + HOG_ATTR_CHRC + HOG_ATTR_CHRC_CCC_REF + HOG_ATTR_CHRC_CCC_REF + \
++     (IS_ENABLED(CONFIG_ZMK_POINTING) ? HOG_ATTR_CHRC_CCC_REF : 0) +                               \
++     ((IS_ENABLED(CONFIG_ZMK_POINTING) && IS_ENABLED(CONFIG_ZMK_POINTING_SMOOTH_SCROLLING))        \
++          ? HOG_ATTR_CHRC_REF                                                                      \
++          : 0) +                                                                                   \
++     (IS_ENABLED(CONFIG_ZMK_HID_INDICATORS) ? HOG_ATTR_CHRC_REF : 0))
++#define HOG_RAW_INPUT_VALUE_INDEX (HOG_ATTRS_BEFORE_RAW + 1)
++#define HOG_RAW_INPUT_REF_INDEX (HOG_RAW_INPUT_VALUE_INDEX + 2)
++
++int zmk_hog_raw_register(const uint8_t *desc, size_t desc_len, zmk_hog_raw_recv_fn recv) {
++    if (desc == NULL || recv == NULL || desc_len == 0 || desc_len > ZMK_HOG_RAW_DESC_MAX) {
++        return -EINVAL;
++    }
++    memcpy(raw_hid_map, zmk_hid_report_desc, sizeof(zmk_hid_report_desc));
++    memcpy(raw_hid_map + sizeof(zmk_hid_report_desc), desc, desc_len);
++    raw_hid_map_len = sizeof(zmk_hid_report_desc) + desc_len;
++    raw_hid_recv = recv;
++    return 0;
++}
++
++#endif // IS_ENABLED(CONFIG_RAW_HID)
++
+ static bool host_requests_notification = false;
+ static uint8_t ctrl_point;
+ // static uint8_t proto_mode;
+@@ -107,7 +159,12 @@ static ssize_t read_hids_report_ref(struct bt_conn *conn, const struct bt_gatt_a
+ }
+ 
+ static ssize_t read_hids_report_map(struct bt_conn *conn, const struct bt_gatt_attr *attr,
+-                                    void *buf, uint16_t len, uint16_t offset) {
++                                   void *buf, uint16_t len, uint16_t offset) {
++#if IS_ENABLED(CONFIG_RAW_HID)
++    if (raw_hid_map_len > 0) {
++        return bt_gatt_attr_read(conn, attr, buf, len, offset, raw_hid_map, raw_hid_map_len);
++    }
++#endif
+     return bt_gatt_attr_read(conn, attr, buf, len, offset, zmk_hid_report_desc,
+                              sizeof(zmk_hid_report_desc));
+ }
+@@ -235,6 +292,35 @@ static void input_ccc_changed(const struct bt_gatt_attr *attr, uint16_t value) {
+     host_requests_notification = (value == BT_GATT_CCC_NOTIFY) ? 1 : 0;
+ }
+ 
++#if IS_ENABLED(CONFIG_RAW_HID)
++
++static ssize_t write_hids_raw_report(struct bt_conn *conn, const struct bt_gatt_attr *attr,
++                                     const void *buf, uint16_t len, uint16_t offset,
++                                     uint8_t flags) {
++    const uint8_t *data = buf;
++    uint16_t taken = len;
++
++    ARG_UNUSED(conn);
++    ARG_UNUSED(attr);
++    ARG_UNUSED(flags);
++    if (offset != 0) {
++        return BT_GATT_ERR(BT_ATT_ERR_INVALID_OFFSET);
++    }
++    if (len > 0 && data == NULL) {
++        return BT_GATT_ERR(BT_ATT_ERR_INVALID_ATTRIBUTE_LEN);
++    }
++    if (len > 0 && data[0] == ZMK_HID_REPORT_ID_RAW) {
++        data++;
++        len--;
++    }
++    if (len > 0 && raw_hid_recv != NULL) {
++        raw_hid_recv(data, (uint8_t)MIN(len, UINT8_MAX));
++    }
++    return taken;
++}
++
++#endif // IS_ENABLED(CONFIG_RAW_HID)
++
+ static ssize_t write_ctrl_point(struct bt_conn *conn, const struct bt_gatt_attr *attr,
+                                 const void *buf, uint16_t len, uint16_t offset, uint8_t flags) {
+     uint8_t *value = attr->user_data;
+@@ -297,9 +383,74 @@ BT_GATT_SERVICE_DEFINE(
+                        NULL, &led_indicators),
+ #endif // IS_ENABLED(CONFIG_ZMK_HID_INDICATORS)
+ 
++#if IS_ENABLED(CONFIG_RAW_HID)
++    BT_GATT_CHARACTERISTIC(BT_UUID_HIDS_REPORT, BT_GATT_CHRC_READ | BT_GATT_CHRC_NOTIFY,
++                           BT_GATT_PERM_READ_ENCRYPT, NULL, NULL, NULL),
++    BT_GATT_CCC(NULL, BT_GATT_PERM_READ_ENCRYPT | BT_GATT_PERM_WRITE_ENCRYPT),
++    BT_GATT_DESCRIPTOR(BT_UUID_HIDS_REPORT_REF, BT_GATT_PERM_READ_ENCRYPT, read_hids_report_ref,
++                       NULL, &raw_hid_input),
++
++    BT_GATT_CHARACTERISTIC(BT_UUID_HIDS_REPORT,
++                           BT_GATT_CHRC_READ | BT_GATT_CHRC_WRITE | BT_GATT_CHRC_WRITE_WITHOUT_RESP,
++                           BT_GATT_PERM_READ_ENCRYPT | BT_GATT_PERM_WRITE_ENCRYPT, NULL,
++                           write_hids_raw_report, NULL),
++    BT_GATT_DESCRIPTOR(BT_UUID_HIDS_REPORT_REF, BT_GATT_PERM_READ_ENCRYPT, read_hids_report_ref,
++                       NULL, &raw_hid_output),
++#endif // IS_ENABLED(CONFIG_RAW_HID)
++
+     BT_GATT_CHARACTERISTIC(BT_UUID_HIDS_CTRL_POINT, BT_GATT_CHRC_WRITE_WITHOUT_RESP,
+                            BT_GATT_PERM_WRITE, NULL, write_ctrl_point, &ctrl_point));
+ 
++#if IS_ENABLED(CONFIG_RAW_HID)
++
++static int raw_hid_bind_notify_attr(void) {
++    const struct bt_gatt_attr *ref = &hog_svc.attrs[HOG_RAW_INPUT_REF_INDEX];
++
++    if (ref->user_data != &raw_hid_input) {
++        LOG_ERR("raw hid report ref is not at attr %u", HOG_RAW_INPUT_REF_INDEX);
++        return -EINVAL;
++    }
++    raw_hid_notify_attr = &hog_svc.attrs[HOG_RAW_INPUT_VALUE_INDEX];
++    return 0;
++}
++
++SYS_INIT(raw_hid_bind_notify_attr, APPLICATION, CONFIG_APPLICATION_INIT_PRIORITY);
++
++int zmk_hog_send_raw_report(const uint8_t *data, uint8_t len) {
++    struct bt_conn *conn = zmk_ble_active_profile_conn();
++    uint8_t report[CONFIG_RAW_HID_REPORT_SIZE] = {0};
++    int err;
++
++    if (conn == NULL) {
++        return -ENOTCONN;
++    }
++    if (data == NULL || raw_hid_notify_attr == NULL) {
++        bt_conn_unref(conn);
++        return data == NULL ? -EINVAL : -ENOENT;
++    }
++    if (len > CONFIG_RAW_HID_REPORT_SIZE) {
++        len = CONFIG_RAW_HID_REPORT_SIZE;
++    }
++    memcpy(report, data, len);
++
++    struct bt_gatt_notify_params notify_params = {
++        .attr = raw_hid_notify_attr,
++        .data = report,
++        .len = CONFIG_RAW_HID_REPORT_SIZE,
++    };
++
++    err = bt_gatt_notify_cb(conn, &notify_params);
++    if (err == -EPERM) {
++        bt_conn_set_security(conn, BT_SECURITY_L2);
++    } else if (err && err != -ENOTCONN) {
++        LOG_WRN("raw hid notify failed: %d", err);
++    }
++    bt_conn_unref(conn);
++    return err;
++}
++
++#endif // IS_ENABLED(CONFIG_RAW_HID)
++
+ K_THREAD_STACK_DEFINE(hog_q_stack, CONFIG_ZMK_BLE_THREAD_STACK_SIZE);
+ 
+ struct k_work_q hog_work_q;

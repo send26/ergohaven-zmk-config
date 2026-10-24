@@ -19,9 +19,6 @@ SNIPPET="${SNIPPET:-studio-rpc-usb-uart}"
 ARTIFACT_NAME="${ARTIFACT_NAME:-velvet_v3_ui_qube_ruen-ergohaven-zmk}"
 CMAKE_ARGS="${CMAKE_ARGS:--DCONFIG_ZMK_STUDIO=y}"
 
-BUILD_DIR="${BUILD_DIR:-$REPO_ROOT/build/$ARTIFACT_NAME}"
-OUTPUT_UF2="${OUTPUT_UF2:-$REPO_ROOT/build/artifacts/$ARTIFACT_NAME.uf2}"
-
 usage() {
   cat <<EOF
 Usage: $(basename "$0") [options]
@@ -55,6 +52,9 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
+BUILD_DIR="${BUILD_DIR:-$REPO_ROOT/build/$ARTIFACT_NAME}"
+OUTPUT_UF2="${OUTPUT_UF2:-$REPO_ROOT/build/artifacts/$ARTIFACT_NAME.uf2}"
+
 if ! command -v docker >/dev/null 2>&1; then
   echo "Docker is not installed or not in PATH." >&2
   exit 1
@@ -66,6 +66,27 @@ if ! docker info >/dev/null 2>&1; then
 fi
 
 mkdir -p "$WORKSPACE_DIR" "$BUILD_DIR" "$(dirname "$OUTPUT_UF2")"
+
+apply_workspace_patch() {
+  local repo="$1"
+  local marker_file="$2"
+  local marker="$3"
+  local patch="$4"
+  if [[ ! -f "$repo/$marker_file" ]]; then
+    echo "skip $patch (missing $repo/$marker_file)" >&2
+    return 0
+  fi
+  if grep -q "$marker" "$repo/$marker_file"; then
+    return 0
+  fi
+  echo "==> Applying $patch"
+  patch -d "$repo" -p1 < "$patch"
+}
+
+apply_workspace_patch "$WORKSPACE_DIR/zmk" app/src/hog.c "ZMK_HID_REPORT_ID_RAW" \
+  "$REPO_ROOT/patches/zmk-ble-raw-hid.patch"
+apply_workspace_patch "$WORKSPACE_DIR/zmk-raw-hid" src/hog.c "zmk_hog_send_raw_report" \
+  "$REPO_ROOT/patches/zmk-raw-hid-primary-hog.patch"
 
 echo "==> Pulling $ZMK_IMAGE"
 docker pull "$ZMK_IMAGE"
@@ -101,8 +122,9 @@ if [[ ! -f .west/config ]]; then
 elif [[ "$REFRESH" == "1" ]]; then
   echo "==> west update (refresh)"
   west update
-  west zephyr-export
 fi
+
+west zephyr-export
 
 KEYMAP_ARGS=()
 if [[ -n "$KEYMAP" ]]; then

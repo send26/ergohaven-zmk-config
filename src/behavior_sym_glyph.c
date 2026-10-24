@@ -234,6 +234,7 @@ static void send_alt_code(const struct sym_def *def, int64_t timestamp) {
 }
 
 static int request_unicode(uint8_t id) {
+    int delivered = -ENOTCONN;
     int rc;
 
     sym_seq = hid_next_seq(sym_seq);
@@ -246,10 +247,11 @@ static int request_unicode(uint8_t id) {
     rc = raise_raw_hid_sent_event((struct raw_hid_sent_event){
         .data = sym_report,
         .length = CONFIG_RAW_HID_REPORT_SIZE,
+        .status = &delivered,
     });
-    if (rc != 0) {
+    if (rc != 0 || delivered != 0) {
         atomic_set(&sym_wait, 0);
-        return rc;
+        return rc != 0 ? rc : delivered;
     }
     rc = k_sem_take(&sym_ack_sem, K_MSEC(SYM_ACK_TIMEOUT_MS));
     atomic_set(&sym_wait, 0);

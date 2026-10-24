@@ -90,6 +90,7 @@ ZMK_SUBSCRIPTION(host_layout_ack, raw_hid_received_event);
 static int on_keymap_binding_pressed(struct zmk_behavior_binding *binding,
                                      struct zmk_behavior_binding_event event) {
     uint8_t index = (uint8_t)binding->param1;
+    int delivered = -ENOTCONN;
     int rc;
 
     ARG_UNUSED(event);
@@ -108,10 +109,12 @@ static int on_keymap_binding_pressed(struct zmk_behavior_binding *binding,
     rc = raise_raw_hid_sent_event((struct raw_hid_sent_event){
         .data = host_layout_report,
         .length = CONFIG_RAW_HID_REPORT_SIZE,
+        .status = &delivered,
     });
-    if (rc != 0) {
+    if (rc != 0 || delivered != 0) {
         atomic_set(&host_layout_wait, 0);
         atomic_set(&host_layout_ok, 0);
+        rc = rc != 0 ? rc : delivered;
         LOG_WRN("host_layout: HID send failed: %d", rc);
         return rc;
     }
